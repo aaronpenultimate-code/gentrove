@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Collections — Gentrove</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Syne:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1A4BF5;--paper:#F7F6F2;--ink:#171717;--stone:#73716C;--surface:#EEECE6;--line:#E2DFD7;--white:#fff;--red:#B4381F;
+--shadow:0 1px 2px rgba(23,23,23,.05),0 4px 14px rgba(26,75,245,.05);--shadow-h:0 2px 4px rgba(23,23,23,.06),0 10px 24px rgba(26,75,245,.07);--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;padding-bottom:80px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.display{font-family:'Syne',sans-serif;font-weight:500;letter-spacing:-.02em}
+.nav{position:sticky;top:0;z-index:30;background:rgba(247,246,242,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.nav-in{max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:20px}
+.logo{font-family:'Syne',sans-serif;font-weight:500;font-size:20px;letter-spacing:-.03em}.logo span{color:var(--blue)}
+.links{display:none;gap:22px;font-size:14px;color:var(--stone)}.links a:hover,.links a.on{color:var(--ink)}
+.nav-r{display:flex;align-items:center;gap:4px;margin-left:auto}
+.icon-btn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--stone)}.icon-btn:hover{background:var(--surface);color:var(--ink)}
+.wrap{max-width:1400px;margin:0 auto;padding:0 20px}
+.btn{height:40px;padding:0 16px;border-radius:10px;font-size:14px;font-weight:500;border:1px solid var(--line);background:var(--white);display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}.btn.p{background:var(--blue);border-color:var(--blue);color:#fff}.btn.p:hover{background:#153ccc}
+.btn.d{color:var(--red)}.btn.d:hover{border-color:var(--red)}.btn.dp{background:var(--red);border-color:var(--red);color:#fff}
+.nb{display:none}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:28px 0 18px;flex-wrap:wrap}
+.head h1{font-size:28px;line-height:1.15}.head p{color:var(--stone);font-size:14px;margin-top:4px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--stone);padding-top:20px}.back:hover{color:var(--ink)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:2px 10px;border-radius:100px;background:var(--surface);color:var(--stone);vertical-align:middle}
+
+/* OVERVIEW */
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding-bottom:40px}
+.cc{text-align:left;display:block;opacity:0;transform:translateY(14px);transition:opacity .42s var(--ease),transform .42s var(--ease)}
+.cc.in{opacity:1;transform:none}
+.mos{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:3px;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);transition:box-shadow .2s ease-out,transform .2s ease-out}
+.cc:hover .mos{box-shadow:var(--shadow-h);transform:translateY(-4px)}
+.mos i{background:var(--surface);display:block}.mos i:first-child{grid-row:span 2}
+.cc h3{font-family:'Syne',sans-serif;font-weight:500;font-size:16px;letter-spacing:-.01em;margin-top:10px;line-height:1.25}
+.cc small{display:flex;gap:6px;align-items:center;color:var(--stone);font-size:12.5px;margin-top:2px}
+.cc.new .mos{background:transparent;border:1.5px dashed #C9C5BA;box-shadow:none;display:grid;place-items:center;grid-template-columns:1fr;grid-template-rows:1fr;color:var(--stone)}
+.cc.new:hover .mos{border-color:var(--blue);color:var(--blue);transform:none}
+
+/* DETAIL GRID */
+.bar{display:flex;gap:10px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:20px}
+.bar .s{position:relative;flex:1;max-width:420px}
+.bar .s svg{position:absolute;left:12px;top:11px;color:var(--stone)}
+.bar input{width:100%;height:40px;border-radius:10px;border:1px solid transparent;background:var(--surface);padding:0 14px 0 38px;font:inherit;font-size:14px}
+.bar input:focus{outline:none;border-color:var(--blue);background:var(--white)}
+select{height:40px;border-radius:10px;border:1px solid var(--line);background:var(--white);padding:0 10px;font:inherit;font-size:13px;color:var(--ink)}
+.grid{columns:2;column-gap:14px;padding-bottom:40px}
+.card{break-inside:avoid;margin-bottom:18px;background:var(--white);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;opacity:0;transform:translateY(14px);transition:opacity .42s var(--ease),transform .42s var(--ease),box-shadow .2s}
+.card.in{opacity:1;transform:none}.card.in:hover{transform:translateY(-4px);box-shadow:var(--shadow-h);transition:transform .2s ease-out,box-shadow .2s ease-out}
+.media{position:relative;overflow:hidden;cursor:pointer;display:block;width:100%}.media .art{position:absolute;inset:0;transition:transform .2s ease-out}.card:hover .art{transform:scale(1.02)}
+.tt{position:absolute;left:10px;top:10px;font-size:11px;font-weight:500;padding:3px 8px;border-radius:6px;background:rgba(23,23,23,.62);color:#fff}
+.body{padding:12px 14px 14px}
+.title{font-family:'Syne',sans-serif;font-weight:500;font-size:16px;line-height:1.25;letter-spacing:-.01em;cursor:pointer}
+.meta{font-size:12px;color:var(--stone);margin-top:3px}
+.preview{font-size:13px;color:var(--stone);margin-top:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.55}
+.foot{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:var(--stone)}
+.foot b{color:var(--ink);font-weight:500}.foot .sp{flex:1}
+.ib{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;color:var(--stone)}.ib:hover{border-color:var(--ink);color:var(--ink)}
+.copy{height:34px;padding:0 10px;border-radius:9px;border:1px solid var(--line);font-size:13px;font-weight:500;display:flex;align-items:center;gap:5px;color:var(--ink)}
+.copy:hover{border-color:var(--ink)}.copy.done{background:var(--blue);border-color:var(--blue);color:#fff}
+.sk{break-inside:avoid;margin-bottom:18px;border-radius:16px;background:var(--surface);position:relative;overflow:hidden}
+.sk::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-100%);animation:sh 1.3s infinite}
+@keyframes sh{to{transform:translateX(100%)}}
+.empty{text-align:center;padding:70px 20px}.empty h3{font-size:22px;margin-bottom:6px}.empty p{color:var(--stone);font-size:14px;margin-bottom:18px}
+
+/* MODAL + TOAST */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(23,23,23,.5);display:none;align-items:flex-end;justify-content:center}.ov.open{display:flex}
+.md{background:var(--paper);width:100%;max-width:460px;border-radius:18px 18px 0 0;padding:22px 20px max(22px,env(safe-area-inset-bottom));max-height:90vh;overflow:auto}
+.md h2{font-size:22px;margin-bottom:4px}.md .sub{color:var(--stone);font-size:14px;margin-bottom:16px}
+.fl{margin-bottom:14px}.fl label,.fl .l{display:block;font-size:13px;font-weight:500;margin-bottom:5px}.fl small{font-weight:400;color:var(--stone)}
+.md input[type=text],.md textarea{width:100%;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--white);padding:0 12px;font:inherit;font-size:14.5px;color:var(--ink)}
+.md textarea{height:auto;padding:10px 12px;resize:vertical}
+.md input:focus,.md textarea:focus{outline:none;border-color:var(--blue)}
+[aria-invalid=true]{border-color:var(--red)!important}
+.er{color:var(--red);font-size:12.5px;margin-top:4px}
+.vis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vis label{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--white);cursor:pointer;font-size:13.5px;font-weight:500;margin:0}
+.vis label small{display:block;font-weight:400;font-size:12px}
+.vis input{position:absolute;opacity:0}.vis label:has(input:checked){border-color:var(--blue);background:#F4F7FF}
+.vis label:has(input:focus-visible){outline:2px solid var(--blue);outline-offset:2px}
+.mb{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.plist{display:grid;gap:2px;margin:6px 0 10px;max-height:44vh;overflow:auto}
+.pl{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;cursor:pointer;font-size:14px}.pl:hover{background:var(--surface)}
+.pl input{accent-color:var(--blue);width:18px;height:18px}.pl span{flex:1}.pl small{color:var(--stone)}
+.inl{display:flex;gap:8px;margin-top:8px}.inl input{flex:1}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(8px);background:var(--ink);color:#fff;font-size:13px;padding:9px 14px;border-radius:10px;z-index:60;opacity:0;pointer-events:none;transition:all .2s;display:flex;gap:14px;align-items:center;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%)}.toast button{color:#9DB6FF;font-weight:500}
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:var(--paper);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 0 max(6px,env(safe-area-inset-bottom))}
+.tabbar a{display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--stone);gap:1px;padding:4px 10px}.tabbar a.on{color:var(--blue)}
+[hidden]{display:none!important}
+@media(min-width:700px){.cgrid{grid-template-columns:repeat(3,1fr)}.grid{columns:3}.ov{align-items:center}.md{border-radius:18px}}
+@media(min-width:960px){.cgrid{grid-template-columns:repeat(4,1fr);gap:22px}.grid{columns:4;column-gap:18px}.links{display:flex}.nb{display:inline-flex}.tabbar{display:none}body{padding-bottom:40px}.toast{bottom:24px}.head h1{font-size:34px}}
+@media(min-width:1280px){.cgrid{grid-template-columns:repeat(5,1fr)}.grid{columns:5}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.card,.cc{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="nav-in">
+  <a href="index.html" class="logo">Gen<span>trove</span></a>
+  <nav class="links"><a href="explore.html">Explore</a><a href="feed.html">Categories</a><a href="collections.html" class="on">Collections</a></nav>
+  <div class="nav-r">
+    <a class="icon-btn" href="notifications.html" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></a>
+    <a class="icon-btn" href="settings.html" aria-label="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></a>
+    <a class="btn p nb" href="upload-wizard.html">Upload</a>
+  </div>
+</div></header>
+<main class="wrap" id="main" aria-live="polite"></main>
+<div class="ov" id="ov" role="dialog" aria-modal="true"><div class="md" id="md"></div></div>
+<div class="toast" id="toast" role="status"><span id="tmsg"></span><button id="tundo" hidden>Undo</button></div>
+<nav class="tabbar" aria-label="Primary">
+  <a href="feed.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Feed</a>
+  <a href="explore.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Explore</a>
+  <a href="upload-wizard.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Upload</a>
+  <a href="collections.html" class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Saved</a>
+  <a href="profile.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Profile</a>
+</nav>
+<script>
+const INDUSTRIES=["Real Estate","Fashion & Lifestyle","Food & Pastry","Church / Faith","Tech & Gadgets","Events & Weddings","Beauty & Cosmetics","Fitness & Wellness","Automotive","Finance & Fintech","Retail & E-commerce","Schools & Education Brands","Agriculture","Logistics & Delivery","Nonprofit / NGO","Healthcare & Medical","Legal"];
+const OUTPUTS=["Marketing & Copywriting","Coding & Automation","Data Analytics","Education","3D & Game Design","Audio & Music","UI/UX & Web Design"];
+const TOOLS=["All","Midjourney","Nano Banana","GPT Image","FLUX.2","Veo 3.1","Claude","ChatGPT","Gemini","Cursor","Suno"];
+
+/* Sample data. image:null → gradient fallback. Swap in real /images/ paths later. */
+const P=[
+["Sunlit penthouse listing hero","Real Estate","Nano Banana","Tunde A.",1284,312,3,4,"c1","Photorealistic wide shot of a [PROPERTY TYPE] living room at golden hour, warm oak floors, linen sofa, floor-to-ceiling windows overlooking [CITY] skyline, soft haze, shot on 35mm, editorial real estate photography, no people.",["luxury","listing","interior"]],
+["Sunday service flyer, gold on black","Church / Faith","Nano Banana","Grace O.",2140,540,4,5,"c2","Design a bold church event flyer, 4:5. Headline '[EVENT NAME]' in large serif, gold foil texture on deep black, subtle light rays behind a silhouette of raised hands. Include date '[DATE]', venue '[VENUE]', clean grid, generous spacing.",["flyer","gold","service"]],
+["Pastry box, morning light","Food & Pastry","Midjourney","Amaka E.",930,201,1,1,"c3","Overhead flat lay of a kraft pastry box with croissants and pain au chocolat, flour dust, linen napkin, soft morning window light, shallow depth of field, muted warm palette --ar 1:1 --style raw",["bakery","flatlay","warm"]],
+["Landing page hero for a fintech app","UI/UX & Web Design","Claude","Kola B.",1760,410,3,2,"c4","Design a landing page hero for a fintech app called [APP NAME]. Quiet editorial layout, off-white background, one strong headline, product mockup on the right, single blue CTA. Output a complete responsive HTML file with inline CSS.",["fintech","hero","web"]],
+["Matte tech unboxing scene","Tech & Gadgets","GPT Image","Femi R.",702,148,4,5,"c5","Product photograph of a matte black [DEVICE] on a concrete slab, dramatic side light, thin rim highlight, deep shadows, minimal styling, 85mm lens, high-end tech campaign look.",["product","dark","minimal"]],
+["Bridal editorial, ivory and sage","Events & Weddings","Midjourney","Zainab M.",1490,360,2,3,"c6","Editorial bridal portrait in a walled garden, ivory silk gown, sage green florals, backlit late afternoon sun, film grain, Kodak Portra 400 --ar 2:3",["bridal","garden","film"]],
+["Weekly sales report analyst","Data Analytics","Claude","Ibrahim S.",640,175,2,1,"c7","You are a senior retail analyst. Given the pasted sales CSV, summarise revenue by week, flag the three biggest movers with likely causes, and finish with two recommended actions. Keep it under 200 words and use a table for numbers.",["report","csv","retail"]],
+["Retro synthwave city loop","Audio & Music","Suno","Dele K.",488,96,1,1,"c8","Instrumental synthwave, 96 BPM, warm analog bass, gated snare, dreamy arpeggios, night-drive mood, slow build into a euphoric chorus, no vocals.",["synthwave","instrumental"]],
+["Skincare bottle on wet stone","Beauty & Cosmetics","FLUX.2","Ngozi P.",1105,254,3,4,"c9","Skincare serum bottle resting on wet grey stone, fine water droplets, soft diffused light, pale sage backdrop, clean luxury beauty advertising, macro detail on glass and label.",["skincare","macro","clean"]],
+["React auth form with validation","Coding & Automation","Cursor","Sam T.",877,230,1,1,"c10","Build an accessible sign-up form component in React with email and password fields, inline validation, disabled submit until valid, and a visible loading state. Include unit tests. Do not add extra dependencies.",["react","forms"]],
+["Cinematic dawn drive, coastal road","Automotive","Veo 3.1","Chidi N.",1320,289,16,9,"c11","Cinematic tracking shot of a dark SUV driving a coastal road at dawn, low sun flare, mist over the sea, subtle handheld feel, 24fps, no text, ambient engine hum.",["video","cinematic","suv"]],
+["Low-poly farm diorama","3D & Game Design","Nano Banana","Yusuf L.",412,88,1,1,"c12","Isometric low-poly farm diorama with a red barn, maize rows and a small tractor, soft pastel palette, clean shadows, game-asset style, neutral background.",["isometric","lowpoly"]],
+["Launch week email sequence","Marketing & Copywriting","ChatGPT","Bisi A.",1560,402,2,1,"c13","Write a 5-email launch sequence for [PRODUCT] targeting [AUDIENCE]. Each email: subject line, 90-word body, one CTA. Tone: confident and warm, no hype words. Add a one-line purpose note above each email.",["email","launch"]],
+["Gym campaign, high-contrast portrait","Fitness & Wellness","Midjourney","Emeka D.",760,170,3,4,"c14","Athlete portrait mid-training in a dim gym, hard rim light, chalk dust in the air, sweat detail, desaturated palette with one warm accent --ar 3:4 --style raw",["gym","portrait"]],
+["Grade 6 fractions lesson plan","Education","Gemini","Mrs. Okoro",530,140,2,1,"c15","Create a 40-minute lesson plan on equivalent fractions for Grade 6. Include a warm-up, a visual model, three worked examples, a group task and an exit ticket. Add differentiation notes.",["lesson","maths"]],
+["Ankara editorial, studio backdrop","Fashion & Lifestyle","Nano Banana","Tola F.",1980,470,2,3,"c16","Fashion editorial of a model in a tailored Ankara set, seamless mustard backdrop, single large softbox, confident stance, crisp fabric texture, full-length framing.",["ankara","studio","editorial"]],
+["Jollof festival poster","Food & Pastry","Nano Banana","Ada C.",1420,330,4,5,"c17","Vibrant poster for a [EVENT NAME] food festival: steaming party jollof in a wide copper pot, charred plantain, string lights at dusk, bold hand-lettered headline, warm reds and golds, room for the date '[DATE]' at the bottom.",["poster","jollof","festival"]],
+["Tailored suit lookbook","Fashion & Lifestyle","Midjourney","Femi R.",1010,240,2,3,"c18","Menswear lookbook shot, charcoal double-breasted suit, Lagos rooftop at blue hour, city bokeh, confident stride, soft fill flash, fashion magazine grain --ar 2:3",["menswear","lookbook"]],
+["Estate brochure cover","Real Estate","GPT Image","Tunde A.",860,190,3,4,"c19","Brochure cover for [ESTATE NAME]: aerial view of a gated estate with palm-lined roads at sunrise, elegant serif title, muted gold accents, plenty of negative space for the tagline.",["brochure","estate","aerial"]],
+["Youth conference stage design","Church / Faith","Nano Banana","Grace O.",970,215,16,9,"c20","Wide stage design render for the [EVENT NAME] youth conference: layered LED wall, warm amber wash, haze, tiered platforms, silhouette of a worship team, cinematic atmosphere.",["stage","conference"]],
+["Fintech dashboard, quiet UI","UI/UX & Web Design","Claude","Kola B.",1240,300,3,2,"c21","Design a spending dashboard for [APP NAME]. Off-white canvas, one accent blue, large balance figure, weekly bar chart, three recent transactions. Output one responsive HTML file.",["dashboard","fintech"]],
+["Podcast intro jingle","Audio & Music","Suno","Dele K.",390,74,1,1,"c22","Upbeat 12-second podcast intro, marimba and finger snaps, warm bass, bright bell hit at the end, no vocals, clean loopable ending.",["jingle","podcast"]],
+["Smartwatch macro on slate","Tech & Gadgets","FLUX.2","Femi R.",810,167,4,5,"c23","Macro product shot of a titanium smartwatch on dark slate, crisp reflections on the sapphire glass, single cool rim light, ultra sharp, premium campaign style.",["watch","macro"]],
+["Weekly meal prep planner","Fitness & Wellness","ChatGPT","Bisi A.",1180,290,2,1,"c24","Create a 7-day high-protein meal prep plan for [GOAL] using affordable Nigerian ingredients. Include a shopping list grouped by market section and a 20-minute Sunday prep routine.",["mealprep","planner"]],
+["Contract summary in plain English","Legal","Claude","Sam T.",720,160,2,1,"c25","Summarise the pasted contract in plain English. List obligations for each party, deadlines, termination terms and any clause that looks unusual. Finish with five questions to ask a lawyer.",["contract","summary"]],
+["Solar farm at golden hour","Agriculture","Veo 3.1","Yusuf L.",530,112,16,9,"c26","Slow aerial glide over rows of solar panels beside green farmland at golden hour, workers walking between rows, warm long shadows, gentle wind sound.",["aerial","solar","video"]],
+["Dispatch rider in the rain","Logistics & Delivery","GPT Image","Emeka D.",640,131,3,4,"c27","Dispatch rider on a motorbike delivering a parcel in evening rain, reflections on wet tarmac, glowing shop signs, shallow depth of field, documentary style.",["delivery","rain"]],
+["Fundraising appeal letter","Nonprofit / NGO","ChatGPT","Mrs. Okoro",480,98,2,1,"c28","Write a 300-word fundraising appeal for [CAUSE]. Open with one specific person's story, state the need with one number, make a single clear ask of [AMOUNT], close with a warm thank-you.",["appeal","donations"]],
+["Clinic reception, calm and bright","Healthcare & Medical","Nano Banana","Ngozi P.",590,120,3,2,"c29","Interior of a modern clinic reception, pale wood, soft daylight, a friendly receptionist at the desk, plants, clean signage, calm reassuring mood, architectural photography.",["clinic","interior"]],
+["Clean messy sales data with Python","Data Analytics","Cursor","Ibrahim S.",920,244,1,1,"c30","Write a Python script that loads sales.csv, standardises column names, fixes date formats, removes duplicates, fills missing prices with the category median and saves clean_sales.csv. Log every change.",["python","cleaning"]],
+["Wedding invite suite, blush and gold","Events & Weddings","Midjourney","Zainab M.",1330,310,4,5,"c31","Flat lay of a wedding invitation suite for [COUPLE NAMES], blush paper, gold foil script, dried pampas, wax seal, soft window light --ar 4:5",["invitation","blush"]],
+["Boutique window display","Retail & E-commerce","Midjourney","Amaka E.",670,142,3,4,"c32","Boutique storefront window at dusk with a sculptural mannequin display, warm spotlights, reflective glass, seasonal sale sign reading '[OFFER]' --ar 3:4",["storefront","retail"]],
+["Botanical skincare flyer, glass-skin portrait","Beauty & Cosmetics","Nano Banana","Ngozi P.",2260,548,1,1,"c33","FORMAT: \nPhotorealistic social media flyer, 1:1 square format (1080×1080px), fresh green luxury skincare brand — clean and botanical\nBACKGROUND:\nVery soft sage-to-lime-white gradient background (#E8F0D5 to #F5FAE8) — cool, fresh, botanical. The color evokes clean nature, plant extracts, and natural luxury. Absolutely clean — no textures, no grain, no patterns. A single fresh green botanical leaf (real or illustrated style) appears floating in front of the subject's cheek/eye area — a key decorative brand element that reinforces the natural ingredients story.\nSUBJECT:\nA strikingly beautiful very dark-skinned Nigerian woman in her late 20s [INSERT CLIENT PHOTO HERE], photorealistic. Positioned right of center, portrait from collarbone upward. Face turned slightly left, eyes forward, gaze direct and serene. Expression: calm, regal, radiantly healthy. Immaculate glowing skin — dewy, smooth, luminous. Defined brows, warm bronze eyeshadow, nude lip. No jewelry. Natural or pulled-back hair. Her right hand raised to the side of her face in a graceful, contemplative pose. A single fresh green leaf touches/rests against her cheek — intimate botanical detail.\nLIGHTING:\nClean, balanced beauty lighting. Soft frontal diffused light. Even exposure — no dramatic shadows. Skin appears lit from within — the \"glass skin\" editorial beauty effect. A very subtle warm undertone in the lighting reinforces the glow and health messaging.\nCOMPOSITION:\nLeft text column. Top-right: logo lockup (leaf icon + brand name). Left: large 3-line editorial headline. Below headline: soft rounded rectangle body copy box (light sage fill). Below body copy: outlined pill services label + services list with checkmark bullets. Portrait subject on right half. Footer: clean white band, centered website URL with search/globe icon. Reading flow: Logo → headline → body copy → services → portrait → website.\nDECORATIVE ELEMENTS:\nLogo: stylized green leaf/plant icon. \"[BRAND NAME]\" in bold dark green sans-serif beside it. Top-right placement.\nSoft pale sage rounded rectangle behind the body copy — like a subtle card, very light green fill\n\"Our Signature Services:\" services label: outlined pill with thin dark green border, no fill\nGreen checkmark (✓) bullets before each service item\nFresh botanical leaf element floating near subject's face — central design detail\nFooter: clean white band. Search/magnifying glass icon beside website URL centered.\nLOGO BLOCK:\nUpper right. Botanical leaf icon in deep green. \"[BRAND NAME]\" in bold dark green modern sans-serif. \"[SKIN BAR]\" micro-label below.\nTEXT OVERLAY (baked into image):\nLine 1 — Headline (left, large):\n\"[Your Glow\"\n\"deserves a\"\n\"little Luxury]\"\nLine 2 — Body copy (sage box):\n\"At [Brand Name], every treatment is crafted to [benefit] and reveal a [result].\"\nLine 3 — Services label:\n\"Our Signature Services:\"\nLine 4 — Services list (green checkmarks):\n✓ [Service 1]\n✓ [Service 2]\n✓ [Service 3]\n✓ [Service 4]\nLine 5 — Footer website:\n🔍 Visit our website: [www.brandwebsite.com]\nCOLOR PALETTE:\nSage Green White (#E8F0D5)\nDeep Forest Green (#1A4A00)\nFresh Leaf Green (#4CAF50)\nLight Sage Card (#D4E8C4)\nPure White (#FFFFFF)\nNear-Black Text (#0D1A00)\nSTYLE:\n\"Clean botanical luxury skincare brand. Fresh sage-green editorial aesthetic. Nigerian organic beauty campaign quality. Minimalist layout with maximum glow. Nature-meets-luxury visual identity.\"\nNEGATIVE PROMPT:\nNo watermarks. No blurry leaf detail. No flat skin tones. No dull green palette. No cold or sterile medical aesthetic. No cluttered layout. No low-quality botanical illustration. No generic stock-photo look.",["skincare","flyer","botanical","glass skin"]]
+];
+const GRADS={c1:["#f0d9b5","#8a6a4a"],c2:["#2a2a2a","#b8902a"],c3:["#f3e2c9","#c98a55"],c4:["#e8f0ff","#1A4BF5"],c5:["#2b2f38","#0d0f14"],c6:["#eef0e4","#9aa98a"],c7:["#e9e6dd","#73716C"],c8:["#3b2a63","#e2497a"],c9:["#dfe8e0","#8fa69a"],c10:["#171717","#3355CC"],c11:["#f2b58a","#1d2b3a"],c12:["#cfe3c4","#e2735c"],c13:["#fff2c2","#FFD000"],c14:["#3a3a3a","#c65a2e"],c15:["#e0ecf7","#7ea4cc"],c16:["#f4c542","#8a5a14"],c17:["#c8321e","#f2b84b"],c18:["#2c3138","#9aa3ad"],c19:["#f5e6c8","#5f8a6a"],c20:["#1a1030","#e28a2e"],c21:["#f4f6ff","#3355CC"],c22:["#ffdf7a","#e2497a"],c23:["#20242b","#5e6a78"],c24:["#dcebd2","#e08a3a"],c25:["#e9e6dd","#2c3a55"],c26:["#f7d38a","#3d7a4a"],c27:["#1e2a3a","#e2b04a"],c28:["#f6dcd0","#c5644a"],c29:["#e5f0f0","#8fb8b8"],c30:["#0d1f3c","#1A4BF5"],c31:["#f6dfe0","#c9a24b"],c32:["#e8d9c6","#3a2f2a"],c33:["#E8F0D5","#4CAF50"]};
+const DATA=P.map((p,i)=>({id:i,title:p[0],cat:p[1],tool:p[2],by:p[3],copies:p[4],likes:p[5],w:p[6],h:p[7],g:p[8],prompt:p[9],tags:p[10],img:null,ago:i,liked:false}));
+
+/* ---------- state (in memory; the backend will own this later) ---------- */
+let C=[
+ {id:'c1',name:'Church & events',desc:'Flyers, stage looks and invites for services and celebrations.',pub:true,ids:[5,30,19,1]},
+ {id:'c2',name:'Client work: beauty',desc:'Skincare and cosmetics campaigns to adapt for clients.',pub:false,ids:[13,28,8,32]},
+ {id:'c3',name:'Real estate ideas',desc:'',pub:true,ids:[0,18]},
+ {id:'c4',name:'Prompts to try',desc:'Things I want to test this month.',pub:false,ids:[7,12,29,9,20,3]},
+ {id:'c5',name:'Weekend project',desc:'',pub:false,ids:[]}
+];
+let view=null,q='',sort='recent',seq=6,loading=true,lastFocus=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>n>=1000?(n/1000).toFixed(1).replace('.0','')+'k':n;
+const bg=d=>{const[a,b]=GRADS[d.g];return `linear-gradient(145deg,${a},${b})`};
+const plural=(n,w)=>n+' '+w+(n===1?'':'s');
+const I={
+ plus:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ lock:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+ globe:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>',
+ copy:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>',
+ bm:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+ x:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+ back:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg>',
+ srch:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+};
+const allIds=()=>{const s=[];C.forEach(c=>c.ids.forEach(i=>{if(!s.includes(i))s.push(i)}));return s};
+const cur=()=>view==='all'?{id:'all',name:'All saved',desc:'Everything you have saved, across all collections.',pub:false,ids:allIds(),virtual:true}:C.find(c=>c.id===view);
+
+/* ---------- toast with undo ---------- */
+let tt;
+function toast(m,undo){
+  $('#tmsg').textContent=m;const u=$('#tundo');u.hidden=!undo;u.onclick=()=>{undo&&undo();hideToast()};
+  $('#toast').classList.add('show');clearTimeout(tt);tt=setTimeout(hideToast,undo?6000:1800);
+}
+const hideToast=()=>$('#toast').classList.remove('show');
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){try{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();return ok}catch(_){return false}}}
+
+/* ---------- entrance animation ---------- */
+const io=new IntersectionObserver(es=>{let n=0;es.forEach(e=>{if(e.isIntersecting){const c=e.target;io.unobserve(c);setTimeout(()=>c.classList.add('in'),Math.min(n++,8)*40)}})},{rootMargin:'0px 0px -6% 0px'});
+const reveal=()=>document.querySelectorAll('.cc:not(.in),.card:not(.in)').forEach(c=>io.observe(c));
+
+/* ---------- render ---------- */
+function mosaic(ids){
+  const t=ids.slice(-3).reverse().map(i=>DATA[i]).filter(Boolean);
+  return `<div class="mos">${[0,1,2].map(k=>`<i style="${t[k]?`background:${bg(t[k])}`:''}"></i>`).join('')}</div>`;
+}
+function render(){
+  const m=$('#main');
+  if(loading){m.innerHTML=`<div class="head"><div><h1 class="display">Collections</h1></div></div><div class="grid">${[260,340,300,380,280,320].map(h=>`<div class="sk" style="height:${h}px"></div>`).join('')}</div>`;return}
+  view===null?renderOverview():renderDetail();
+  reveal();
+}
+function renderOverview(){
+  const n=allIds().length;
+  const tile=(id,name,ids,pub,virtual)=>`<button class="cc" data-open="${id}" aria-label="Open ${esc(name)}">${mosaic(ids)}<h3>${esc(name)}</h3><small>${plural(ids.length,'prompt')}${virtual?'':` · <span style="display:inline-flex;gap:4px;align-items:center">${pub?I.globe+'Public':I.lock+'Private'}</span>`}</small></button>`;
+  $('#main').innerHTML=`<div class="head"><div><h1 class="display">Collections</h1><p>${plural(C.length,'collection')} · ${plural(n,'saved prompt')}</p></div><button class="btn p" data-new>New collection</button></div>
+   <div class="cgrid">${n?tile('all','All saved',allIds(),false,true):''}${C.map(c=>tile(c.id,c.name,c.ids,c.pub)).join('')}
+   <button class="cc new" data-new aria-label="New collection"><div class="mos">${I.plus}</div><h3>New collection</h3><small>Group prompts by project or client</small></button></div>`;
+}
+function list(){
+  const c=cur();let l=(view==='all'?c.ids:c.ids).map(i=>DATA[i]).filter(Boolean);
+  if(sort==='recent')l.reverse();else if(sort==='copies')l.sort((a,b)=>b.copies-a.copies);else l.sort((a,b)=>a.title.localeCompare(b.title));
+  if(q)l=l.filter(d=>(d.title+d.cat+d.tool+d.prompt+d.tags.join(' ')).toLowerCase().includes(q));
+  return l;
+}
+function cardHTML(d){
+  return `<article class="card"><div class="media" data-go="${d.id}" style="aspect-ratio:${d.w}/${d.h}" role="link" tabindex="0" aria-label="Open ${esc(d.title)}"><div class="art" style="background:${bg(d)}"></div><span class="tt">${d.tool}</span></div>
+  <div class="body"><h3 class="title" data-go="${d.id}">${esc(d.title)}</h3><div class="meta">${esc(d.by)} · ${esc(d.cat)}</div><p class="preview">${esc(d.prompt)}</p>
+  <div class="foot"><span><b>${fmt(d.copies)}</b> copies</span><span class="sp"></span>
+   <button class="ib" data-pick="${d.id}" aria-label="Add to collections">${I.bm}</button>
+   <button class="ib" data-rm="${d.id}" aria-label="${view==='all'?'Unsave':'Remove from this collection'}" title="${view==='all'?'Unsave':'Remove from collection'}">${I.x}</button>
+   <button class="copy" data-copy="${d.id}" aria-label="Copy prompt">${I.copy}<span>Copy</span></button></div></div></article>`;
+}
+function renderDetail(){
+  const c=cur();if(!c){view=null;return renderOverview()}
+  const l=list(),total=c.ids.length;
+  $('#main').innerHTML=`<button class="back" data-home>${I.back}Collections</button>
+   <div class="head"><div><h1 class="display">${esc(c.name)}</h1>${c.desc?`<p>${esc(c.desc)}</p>`:''}
+    <p style="margin-top:6px">${plural(total,'prompt')}${c.virtual?'':` · <span class="chip">${c.pub?I.globe+'Public':I.lock+'Private'}</span>`}</p></div>
+    ${c.virtual?'':`<div class="acts"><button class="btn" data-share>Share</button><button class="btn" data-edit>Edit</button><button class="btn d" data-del>Delete</button></div>`}</div>
+   ${total?`<div class="bar"><label class="s"><span hidden>Search this collection</span>${I.srch}<input type="search" id="q" placeholder="Search this collection" value="${esc(q)}"></label>
+    <select id="sort" aria-label="Sort"><option value="recent">Recently saved</option><option value="copies">Most copied</option><option value="az">A to Z</option></select></div>`:''}
+   <div id="gridwrap">${gridHTML(l,total)}</div>`;
+  if(total)$('#sort').value=sort;
+}
+function gridHTML(l,total){
+  if(!total)return `<div class="empty"><h3 class="display">Nothing here yet</h3><p>Save prompts from the feed and they will show up here.</p><a class="btn p" href="feed.html">Browse the feed</a></div>`;
+  if(!l.length)return `<div class="empty"><h3 class="display">No matches</h3><p>Nothing in this collection matches "${esc(q)}".</p><button class="btn" data-clear>Clear search</button></div>`;
+  return `<div class="grid">${l.map(cardHTML).join('')}</div>`;
+}
+function refreshGrid(){const c=cur();$('#gridwrap').innerHTML=gridHTML(list(),c.ids.length);reveal()}
+
+/* ---------- navigation ---------- */
+function open(v,push=true){
+  view=v;q='';window.scrollTo({top:0});render();
+  if(push){try{location.hash=v?'c='+v:''}catch(e){}}
+}
+window.addEventListener('hashchange',()=>{const m=location.hash.match(/^#c=(.+)$/),v=m?m[1]:null;if(v!==view&&(v===null||v==='all'||C.some(c=>c.id===v))){view=v;q='';render()}});
+
+/* ---------- modals ---------- */
+function showModal(html,focusSel){
+  lastFocus=document.activeElement;$('#md').innerHTML=html;$('#ov').classList.add('open');document.body.style.overflow='hidden';
+  const f=focusSel&&$('#md '+focusSel);(f||$('#md button, #md input')).focus();
+}
+function closeModal(){$('#ov').classList.remove('open');document.body.style.overflow='';$('#md').innerHTML='';if(lastFocus&&document.contains(lastFocus))lastFocus.focus()}
+$('#ov').addEventListener('mousedown',e=>{if(e.target.id==='ov')closeModal()});
+document.addEventListener('keydown',e=>{
+  if(!$('#ov').classList.contains('open'))return;
+  if(e.key==='Escape')return closeModal();
+  if(e.key==='Tab'){const f=[...$('#md').querySelectorAll('button,input,textarea,select,a[href]')].filter(x=>!x.disabled);if(!f.length)return;const a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
+});
+const nameErr=(name,ignoreId)=>{const t=name.trim();if(!t)return 'Give your collection a name.';if(t.length>40)return 'Keep the name under 40 characters.';if(C.some(c=>c.id!==ignoreId&&c.name.toLowerCase()===t.toLowerCase()))return 'You already have a collection with that name.';return ''};
+
+function editor(id,thenAdd){
+  const c=id?C.find(x=>x.id===id):null;
+  showModal(`<h2 class="display">${c?'Edit collection':'New collection'}</h2><p class="sub">${c?'Change the name, description or who can see it.':'Group prompts by project, client or mood.'}</p>
+   <div class="fl"><label for="en">Name</label><input type="text" id="en" maxlength="40" value="${c?esc(c.name):''}" placeholder="e.g. Church flyers" autocomplete="off"><div class="er" id="ee"></div></div>
+   <div class="fl"><label for="ed">Description <small>(optional)</small></label><textarea id="ed" rows="2" maxlength="120" placeholder="What is this collection for?">${c?esc(c.desc):''}</textarea></div>
+   <div class="fl"><span class="l">Who can see it</span><div class="vis"><label><input type="radio" name="v" value="0" ${!c||!c.pub?'checked':''}>Private<small>Only you</small></label><label><input type="radio" name="v" value="1" ${c&&c.pub?'checked':''}>Public<small>Anyone with the link</small></label></div></div>
+   <div class="mb"><button class="btn" id="ecx">Cancel</button><button class="btn p" id="eok">${c?'Save changes':'Create'}</button></div>`,'#en');
+  const go=()=>{
+    const name=$('#en').value,e=nameErr(name,id);
+    if(e){$('#ee').textContent=e;$('#en').setAttribute('aria-invalid','true');$('#en').focus();return}
+    const pub=$('#md input[name=v]:checked').value==='1',desc=$('#ed').value.trim();
+    if(c){Object.assign(c,{name:name.trim(),desc,pub});closeModal();render();toast('Changes saved')}
+    else{const n={id:'c'+(seq++),name:name.trim(),desc,pub,ids:thenAdd!=null?[thenAdd]:[]};C.push(n);closeModal();if(thenAdd!=null){toast(`Saved to ${n.name}`);render()}else{toast('Collection created');open(n.id)}}
+  };
+  $('#eok').onclick=go;$('#ecx').onclick=closeModal;$('#en').onkeydown=e=>{if(e.key==='Enter')go()};$('#en').oninput=()=>{$('#ee').textContent='';$('#en').removeAttribute('aria-invalid')};
+}
+function picker(pid){
+  const d=DATA[pid];
+  const body=()=>C.length?C.map(c=>`<label class="pl"><input type="checkbox" data-c="${c.id}" ${c.ids.includes(pid)?'checked':''}><span>${esc(c.name)}</span><small>${c.ids.length}</small></label>`).join(''):'<p class="sub" style="margin:8px 0">You have no collections yet.</p>';
+  showModal(`<h2 class="display">Save to collection</h2><p class="sub">${esc(d.title)}</p><div class="plist" id="pls">${body()}</div>
+   <div class="inl"><input type="text" id="pn" maxlength="40" placeholder="New collection name" aria-label="New collection name" autocomplete="off"><button class="btn" id="pa">Create</button></div><div class="er" id="pe"></div>
+   <div class="mb"><button class="btn p" id="pd">Done</button></div>`);
+  $('#pls').onchange=e=>{
+    const cb=e.target.closest('[data-c]');if(!cb)return;const c=C.find(x=>x.id===cb.dataset.c);
+    if(cb.checked){if(!c.ids.includes(pid))c.ids.push(pid);toast(`Saved to ${c.name}`)}else{c.ids=c.ids.filter(i=>i!==pid);toast(`Removed from ${c.name}`)}
+    cb.closest('.pl').querySelector('small').textContent=c.ids.length;
+  };
+  const add=()=>{const n=$('#pn').value,e=nameErr(n);if(e){$('#pe').textContent=e;return}
+    C.push({id:'c'+(seq++),name:n.trim(),desc:'',pub:false,ids:[pid]});$('#pls').innerHTML=body();$('#pn').value='';$('#pe').textContent='';toast(`Saved to ${n.trim()}`)};
+  $('#pa').onclick=add;$('#pn').onkeydown=e=>{if(e.key==='Enter')add()};$('#pn').oninput=()=>$('#pe').textContent='';
+  $('#pd').onclick=()=>{closeModal();render()};
+}
+function confirmDelete(){
+  const c=cur();
+  showModal(`<h2 class="display">Delete "${esc(c.name)}"?</h2><p class="sub">${plural(c.ids.length,'prompt')} will be removed from this collection. Prompts that are also in other collections stay saved there.</p>
+   <div class="mb"><button class="btn" id="dx">Keep it</button><button class="btn dp" id="dok">Delete collection</button></div>`,'#dx');
+  $('#dx').onclick=closeModal;
+  $('#dok').onclick=()=>{
+    const idx=C.findIndex(x=>x.id===c.id),snap=C[idx];C.splice(idx,1);closeModal();open(null);
+    toast(`Deleted "${snap.name}"`,()=>{C.splice(Math.min(idx,C.length),0,snap);render()});
+  };
+}
+
+/* ---------- events ---------- */
+$('#main').addEventListener('click',async e=>{
+  const t=e.target,g=s=>t.closest(s);
+  if(g('[data-new]'))return editor(null);
+  if(g('[data-home]'))return open(null);
+  const o=g('[data-open]');if(o)return open(o.dataset.open);
+  if(g('[data-edit]'))return editor(view);
+  if(g('[data-del]'))return confirmDelete();
+  if(g('[data-clear]')){q='';const i=$('#q');if(i)i.value='';return refreshGrid()}
+  if(g('[data-share]')){const c=cur();if(!c.pub)return toast('Make this collection public to share it');
+    const ok=await copyText(location.href.split('#')[0]+'#c='+c.id);return toast(ok?'Link copied':'Copy failed. Copy the address bar link instead.')}
+  const go=g('[data-go]');if(go){location.href='prompt-detail.html?id='+go.dataset.go;return}
+  const pk=g('[data-pick]');if(pk)return picker(+pk.dataset.pick);
+  const rm=g('[data-rm]');
+  if(rm){
+    const pid=+rm.dataset.rm,d=DATA[pid];
+    if(view==='all'){const snap=C.filter(c=>c.ids.includes(pid)).map(c=>({c,i:c.ids.indexOf(pid)}));C.forEach(c=>c.ids=c.ids.filter(i=>i!==pid));
+      renderDetail();reveal();toast(`Unsaved "${d.title}"`,()=>{snap.forEach(s=>s.c.ids.splice(s.i,0,pid));render()})}
+    else{const c=cur(),i=c.ids.indexOf(pid);c.ids.splice(i,1);renderDetail();reveal();toast(`Removed from ${c.name}`,()=>{c.ids.splice(i,0,pid);render()})}
+    return;
+  }
+  const cp=g('[data-copy]');
+  if(cp){const d=DATA[+cp.dataset.copy];if(await copyText(d.prompt)){d.copies++;cp.classList.add('done');cp.querySelector('span').textContent='Copied';toast('Prompt copied');setTimeout(()=>{cp.classList.remove('done');cp.querySelector('span').textContent='Copy'},1800)}else toast('Copy failed. Select the text manually.')}
+});
+$('#main').addEventListener('input',e=>{if(e.target.id==='q'){clearTimeout(open.t);open.t=setTimeout(()=>{q=e.target.value.trim().toLowerCase();refreshGrid()},200)}});
+$('#main').addEventListener('change',e=>{if(e.target.id==='sort'){sort=e.target.value;refreshGrid()}});
+$('#main').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.go)location.href='prompt-detail.html?id='+e.target.dataset.go});
+
+/* ---------- init ---------- */
+(function(){const m=location.hash.match(/^#c=(.+)$/);if(m&&(m[1]==='all'||C.some(c=>c.id===m[1])))view=m[1]})();
+render();
+setTimeout(()=>{loading=false;render()},600);
+</script>
+</body>
+</html>

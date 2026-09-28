@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Upload a prompt — Gentrove</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Syne:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1A4BF5;--paper:#F7F6F2;--ink:#171717;--stone:#73716C;--surface:#EEECE6;--line:#E2DFD7;--white:#fff;--red:#B4381F;
+--shadow:0 1px 2px rgba(23,23,23,.05),0 4px 14px rgba(26,75,245,.05)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;padding-bottom:96px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.display{font-family:'Syne',sans-serif;font-weight:500;letter-spacing:-.02em}
+.nav{position:sticky;top:0;z-index:30;background:rgba(247,246,242,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.nav-in{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
+.logo{font-family:'Syne',sans-serif;font-weight:500;font-size:20px;letter-spacing:-.03em}.logo span{color:var(--blue)}
+.nav-r{display:flex;align-items:center;gap:4px;margin-left:auto}
+.icon-btn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--stone)}.icon-btn:hover{background:var(--surface);color:var(--ink)}
+.cancel{font-size:14px;color:var(--stone);padding:0 10px}.cancel:hover{color:var(--ink)}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+
+/* STEPPER */
+.steps{display:flex;gap:8px;padding:24px 0 8px}
+.stp{flex:1;text-align:left;padding-top:10px;border-top:3px solid var(--line);font-size:12.5px;color:var(--stone)}
+.stp b{display:block;font-weight:500;color:var(--stone);font-size:13px}
+.stp.on{border-color:var(--blue)}.stp.on b{color:var(--ink)}
+.stp.done{border-color:var(--ink);cursor:pointer}.stp.done b{color:var(--ink)}
+h1{font-size:28px;line-height:1.15;margin-top:18px}
+.lead{color:var(--stone);font-size:14px;margin:4px 0 22px}
+.field{margin-bottom:22px}
+label.l,.l{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.l small{font-weight:400;color:var(--stone)}
+input[type=text],select,textarea{width:100%;border-radius:10px;border:1px solid var(--line);background:var(--white);padding:0 12px;font:inherit;font-size:14.5px;color:var(--ink);height:44px}
+textarea{height:auto;padding:12px;line-height:1.65;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue)}
+[aria-invalid=true]{border-color:var(--red)!important}
+.err{color:var(--red);font-size:12.5px;margin-top:5px;min-height:0}
+.hint{font-size:12.5px;color:var(--stone);margin-top:5px;display:flex;justify-content:space-between;gap:10px}
+.group{margin-bottom:16px}.group h4{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:500;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.tool{padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--white);font-size:13.5px}
+.tool:hover{border-color:var(--ink)}.tool[aria-checked=true]{border-color:var(--blue);background:#E8F0FF;color:var(--blue);font-weight:500}
+
+/* UPLOAD */
+.drop{display:block;border:1.5px dashed #C9C5BA;border-radius:16px;padding:34px 16px;text-align:center;background:var(--white);cursor:pointer;transition:border-color .2s,background .2s}
+.drop:hover,.drop.over{border-color:var(--blue);background:#F4F7FF}
+.drop b{display:block;font-weight:500}.drop span{font-size:13px;color:var(--stone)}
+.drop svg{color:var(--stone);margin-bottom:6px}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:14px}
+.th{position:relative;border-radius:12px;overflow:hidden;background:var(--surface);aspect-ratio:1;box-shadow:var(--shadow)}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th .x{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:8px;background:rgba(23,23,23,.7);color:#fff;display:grid;place-items:center}
+.th .cv{position:absolute;left:6px;bottom:6px;font-size:11px;padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.92);font-weight:500}
+.th button.cv:hover{background:#fff;color:var(--blue)}
+
+/* PROMPT + FILL-INS */
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin-top:10px;cursor:pointer}.check input{margin-top:4px;accent-color:var(--blue);width:16px;height:16px}
+.det{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--white);padding:14px 16px}
+.det h3{font-size:13px;font-weight:500}.det p.s{font-size:12.5px;color:var(--stone);margin-top:2px}
+.row{display:grid;grid-template-columns:1fr;gap:6px;padding:10px 0;border-top:1px solid var(--line);margin-top:10px}
+.row:first-of-type{margin-top:12px}
+.row .nm{font-size:13.5px;font-weight:500;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{font-size:11px;padding:1px 8px;border-radius:100px;background:var(--surface);color:var(--stone);font-weight:400}
+.row input{height:38px;font-size:13.5px}
+.empty{font-size:13px;color:var(--stone);padding-top:10px}
+.tagbox{display:flex;flex-wrap:wrap;gap:6px;border:1px solid var(--line);background:var(--white);border-radius:10px;padding:7px}
+.tagbox:focus-within{border-color:var(--blue)}
+.tagbox input{border:0;flex:1;min-width:120px;height:30px;padding:0 6px;background:none}
+.tg{display:inline-flex;align-items:center;gap:4px;padding:3px 6px 3px 10px;border-radius:100px;background:var(--surface);font-size:13px}
+.tg button{width:18px;height:18px;border-radius:50%;color:var(--stone);display:grid;place-items:center}.tg button:hover{background:#dcd9d0;color:var(--ink)}
+.sug{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--stone)}
+.sug button{padding:2px 10px;border-radius:100px;border:1px dashed #C9C5BA;font-size:12.5px}.sug button:hover{border-color:var(--blue);color:var(--blue)}
+
+/* REVIEW */
+.rev{display:grid;gap:22px}
+.card{background:var(--white);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;max-width:340px}
+.card .m{position:relative;background:var(--surface)}.card .m img{width:100%;display:block}
+.card .tt{position:absolute;left:10px;top:10px;font-size:11px;font-weight:500;padding:3px 8px;border-radius:6px;background:rgba(23,23,23,.62);color:#fff}
+.card .b{padding:12px 14px 14px}.card h3{font-family:'Syne',sans-serif;font-weight:500;font-size:16px;line-height:1.25}
+.card .mt{font-size:12px;color:var(--stone);margin-top:3px}
+.card p{font-size:13px;color:var(--stone);margin-top:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pbox{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14px;line-height:1.65;white-space:pre-wrap;max-height:260px;overflow:auto}
+.pbox mark{background:#E8F0FF;color:var(--blue);border-radius:4px;padding:0 3px}.pbox mark.file{background:transparent;outline:1px dashed var(--blue)}
+.sum{font-size:13.5px;color:var(--stone)}.sum b{color:var(--ink);font-weight:500}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:500;margin-bottom:8px}
+.done-box{text-align:center;padding:70px 10px}
+.done-box .ok{width:56px;height:56px;border-radius:50%;background:#E8F0FF;color:var(--blue);display:grid;place-items:center;margin:0 auto 16px}
+.done-box p{color:var(--stone);margin:6px 0 22px}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* BAR */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:rgba(247,246,242,.96);border-top:1px solid var(--line);backdrop-filter:blur(8px);padding:12px 20px max(12px,env(safe-area-inset-bottom))}
+.bar-in{max-width:720px;margin:0 auto;display:flex;gap:10px;align-items:center}
+.bar .sp{flex:1;font-size:12.5px;color:var(--stone)}
+.btn{height:44px;padding:0 20px;border-radius:10px;font-size:14px;font-weight:500;border:1px solid var(--line);background:var(--white);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{border-color:var(--ink)}
+.btn.p{background:var(--blue);border-color:var(--blue);color:#fff}.btn.p:hover{background:#153ccc}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.banner{padding:12px 14px;border-radius:10px;background:#fff3f0;color:#a2361f;font-size:13px;margin-bottom:16px}
+[hidden]{display:none!important}
+@media(min-width:900px){.rev{grid-template-columns:340px 1fr;gap:32px;align-items:start}h1{font-size:34px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="nav-in">
+  <a href="index.html" class="logo">Gen<span>trove</span></a>
+  <div class="nav-r">
+    <a class="icon-btn" href="notifications.html" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></a>
+    <a class="icon-btn" href="settings.html" aria-label="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></a>
+    <a class="cancel" href="feed.html" id="cancel">Cancel</a>
+  </div>
+</div></header>
+
+<main class="wrap" id="main">
+  <nav class="steps" id="steps" aria-label="Progress"></nav>
+
+  <section id="s1" aria-labelledby="h1a">
+    <h1 class="display" id="h1a" tabindex="-1">What did you make it with?</h1>
+    <p class="lead">Pick the AI tool, then add the result it produced.</p>
+    <div class="field" role="radiogroup" aria-label="AI tool" id="tools"></div>
+    <div class="err" id="e-tool"></div>
+    <div class="field" style="margin-top:22px">
+      <span class="l">Result images <small>(1 to 4, the first is your cover. Screenshots work for text tools.)</small></span>
+      <label class="drop" id="drop"><input type="file" id="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+        <b>Drop images here or tap to browse</b><span>JPG, PNG or WebP, up to 8 MB each</span></label>
+      <div class="err" id="e-img" role="alert"></div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+  </section>
+
+  <section id="s2" hidden aria-labelledby="h1b">
+    <h1 class="display" id="h1b" tabindex="-1">Now the prompt</h1>
+    <p class="lead">Paste it exactly as you ran it. Viewers copy from here.</p>
+    <div class="field"><label class="l" for="title">Title</label><input type="text" id="title" maxlength="80" autocomplete="off" placeholder="e.g. Sunlit penthouse listing hero">
+      <div class="hint"><span class="err" id="e-title" style="margin:0"></span><span id="c-title">0/80</span></div></div>
+    <div class="field"><label class="l" for="cat">Category</label><select id="cat"></select><div class="err" id="e-cat"></div></div>
+    <div class="field"><label class="l" for="prompt">Prompt</label><textarea id="prompt" rows="11" placeholder="Paste your full prompt here"></textarea>
+      <div class="hint"><span>Tip: wrap anything the next person should change in [CAPITAL BRACKETS], like [BRAND NAME] or [EVENT DATE].</span><span id="c-prompt">0</span></div>
+      <div class="err" id="e-prompt"></div>
+      <label class="check"><input type="checkbox" id="code"><span>This prompt contains real square brackets, like code. Don't treat them as fill-ins.</span></label>
+      <div class="det" id="det" aria-live="polite"></div></div>
+    <div class="field"><label class="l" for="neg">Avoid <small>(optional)</small></label><textarea id="neg" rows="2" placeholder="e.g. No watermark, no extra fingers, no cluttered background"></textarea></div>
+    <div class="field"><span class="l">Tags <small>(up to 8. Press Enter or comma to add)</small></span>
+      <div class="tagbox" id="tagbox"><span id="tags" style="display:contents"></span><input type="text" id="tagin" aria-label="Add a tag" placeholder="Add a tag" maxlength="24"></div>
+      <div class="sug" id="sug"></div><div class="err" id="e-tags"></div></div>
+  </section>
+
+  <section id="s3" hidden aria-labelledby="h1c">
+    <h1 class="display" id="h1c" tabindex="-1">Review and publish</h1>
+    <p class="lead">This is how your prompt will look in the feed.</p>
+    <div class="banner" id="banner" hidden role="alert"></div>
+    <div class="rev">
+      <div><div class="lbl">Feed card</div><div class="card" id="pcard"></div></div>
+      <div>
+        <div class="lbl">Prompt</div><div class="pbox" id="ppr"></div>
+        <div class="lbl" style="margin-top:20px">Details</div><div class="sum" id="psum"></div>
+        <label class="check" style="margin-top:20px"><input type="checkbox" id="agree"><span>I created this prompt and result, or have the right to share them, and I follow the community guidelines.</span></label>
+        <div class="err" id="e-agree"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="done" hidden class="done-box" aria-live="polite">
+    <div class="ok"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
+    <h1 class="display" style="margin:0">Your prompt is live</h1>
+    <p>People can now find, copy and save it.</p>
+    <div class="actions"><a class="btn p" href="feed.html">Back to the feed</a><button class="btn" id="again">Upload another</button></div>
+  </section>
+</main>
+
+<div class="bar" id="bar"><div class="bar-in">
+  <button class="btn" id="back" hidden>Back</button><span class="sp" id="hintbar">Step 1 of 3</span>
+  <button class="btn p" id="next">Continue</button>
+</div></div>
+
+<script>
+/* ---------- BACKEND SEAM: swap this one function for the real save (Supabase/Firebase) ---------- */
+function publishPrompt(data){ return new Promise(res=>setTimeout(()=>res({id:'new-'+Date.now()}),900)) }
+
+const TOOLS={"Image":["Midjourney","Nano Banana","GPT Image","FLUX.2","Adobe Firefly","Ideogram","Recraft","Grok Imagine"],"Video":["Veo 3.1","Kling 3.0","Runway Gen-4.5","Luma","Pika","Seedance","Higgsfield"],"Chat / LLM":["ChatGPT","Claude","Gemini","Grok"],"Coding":["Cursor","Claude Code","GitHub Copilot","Windsurf"],"UI/UX & Web":["Google Stitch","v0","Lovable","Figma Make"],"Audio":["Suno","Udio","ElevenLabs Music"],"3D":["Meshy","Tripo","Spline AI"]};
+const INDUSTRIES=["Real Estate","Fashion & Lifestyle","Food & Pastry","Church / Faith","Tech & Gadgets","Events & Weddings","Beauty & Cosmetics","Fitness & Wellness","Automotive","Finance & Fintech","Retail & E-commerce","Schools & Education Brands","Agriculture","Logistics & Delivery","Nonprofit / NGO","Healthcare & Medical","Legal"];
+const OUTPUTS=["Marketing & Copywriting","Coding & Automation","Data Analytics","Education","3D & Game Design","Audio & Music","UI/UX & Web Design"];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const X={step:1,tool:'',cat:'',imgs:[],title:'',prompt:'',neg:'',tags:[],code:false,ex:{},agree:false,busy:false,done:false};
+const MAX_IMG=4,MAX_MB=8;
+
+/* ---------- fill-in detection (same rules as prompt-detail.html) ---------- */
+const RE=/(^|[^\w)\]])(\[([^\[\]]{2,90})\])(?!\()/g;
+const norm=s=>s.replace(/["'“”]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+const isCode=c=>/[\\^*+?|{}=<>;]/.test(c)||!/[A-Za-z]{2}/.test(c)||/^\s*[a-z0-9]-[a-z0-9]/i.test(c)||/^\s*['"`].*['"`]\s*$/.test(c);
+const kindOf=c=>/\b(insert|upload|attach)\b/i.test(c)&&/\b(photo|image|picture|logo|reference|file|screenshot|csv|document|pdf|data)\b/i.test(c)?'file':/\bpaste\b/i.test(c)?'long':'text';
+const nice=c=>{const t=c.replace(/["“”]/g,'').replace(/\s+/g,' ').trim();return t===t.toUpperCase()?t.toLowerCase().replace(/\b\w/g,m=>m.toUpperCase()):t};
+function tokens(s){
+  if(X.code)return [{p:0,s}];
+  const out=[],re=new RegExp(RE.source,'g');let last=0,m;
+  while((m=re.exec(s))){const c=m[3];if(isCode(c))continue;const st=m.index+m[1].length;if(st>last)out.push({p:0,s:s.slice(last,st)});out.push({p:1,s:m[2],key:norm(c),label:nice(c),kind:kindOf(c)});last=st+m[2].length}
+  out.push({p:0,s:s.slice(last)});return out}
+const fields=()=>{const seen={};return tokens(X.prompt).filter(t=>t.p&&!seen[t.key]&&(seen[t.key]=1))};
+
+/* ---------- step 1: tools + images ---------- */
+$('#tools').innerHTML=Object.entries(TOOLS).map(([g,l])=>`<div class="group"><h4>${g}</h4><div class="chips">${l.map(t=>`<button type="button" class="tool" role="radio" aria-checked="false" data-t="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`).join('');
+$('#tools').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;X.tool=b.dataset.t;document.querySelectorAll('.tool').forEach(x=>x.setAttribute('aria-checked',x===b));$('#e-tool').textContent='';renderSug()};
+
+function addFiles(list){
+  const errs=[];
+  for(const f of list){
+    if(X.imgs.length>=MAX_IMG){errs.push(`You can add up to ${MAX_IMG} images.`);break}
+    if(!/^image\/(jpeg|png|webp)$/.test(f.type)){errs.push(`${f.name}: only JPG, PNG or WebP.`);continue}
+    if(f.size>MAX_MB*1048576){errs.push(`${f.name}: over ${MAX_MB} MB.`);continue}
+    const o={file:f,url:URL.createObjectURL(f),w:1,h:1},im=new Image();
+    im.onload=()=>{o.w=im.naturalWidth;o.h=im.naturalHeight;if(X.step===3)renderReview()};im.src=o.url;X.imgs.push(o);
+  }
+  $('#e-img').textContent=errs.join(' ');renderThumbs();
+}
+function renderThumbs(){
+  $('#thumbs').innerHTML=X.imgs.map((o,i)=>`<div class="th"><img src="${o.url}" alt="Result ${i+1}">
+    <button type="button" class="x" data-rm="${i}" aria-label="Remove image ${i+1}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    ${i===0?'<span class="cv">Cover</span>':`<button type="button" class="cv" data-cv="${i}">Make cover</button>`}</div>`).join('');
+  $('#drop').style.display=X.imgs.length>=MAX_IMG?'none':'block';
+}
+$('#thumbs').onclick=e=>{
+  const rm=e.target.closest('[data-rm]'),cv=e.target.closest('[data-cv]');
+  if(rm){const [o]=X.imgs.splice(+rm.dataset.rm,1);URL.revokeObjectURL(o.url)}
+  else if(cv){const [o]=X.imgs.splice(+cv.dataset.cv,1);X.imgs.unshift(o)}else return;
+  $('#e-img').textContent='';renderThumbs();
+};
+$('#file').onchange=e=>{addFiles([...e.target.files]);e.target.value=''};
+const dz=$('#drop');
+['dragenter','dragover'].forEach(n=>dz.addEventListener(n,e=>{e.preventDefault();dz.classList.add('over')}));
+['dragleave','drop'].forEach(n=>dz.addEventListener(n,e=>{e.preventDefault();dz.classList.remove('over')}));
+dz.addEventListener('drop',e=>addFiles([...e.dataTransfer.files]));
+
+/* ---------- step 2 ---------- */
+$('#cat').innerHTML='<option value="">Choose a category</option><optgroup label="Industries">'+INDUSTRIES.map(c=>`<option>${esc(c)}</option>`).join('')+'</optgroup><optgroup label="Output type">'+OUTPUTS.map(c=>`<option>${esc(c)}</option>`).join('')+'</optgroup>';
+$('#cat').onchange=e=>{X.cat=e.target.value;$('#e-cat').textContent='';e.target.removeAttribute('aria-invalid');renderSug()};
+$('#title').oninput=e=>{X.title=e.target.value;$('#c-title').textContent=X.title.length+'/80';$('#e-title').textContent='';e.target.removeAttribute('aria-invalid')};
+$('#neg').oninput=e=>X.neg=e.target.value;
+$('#prompt').oninput=e=>{X.prompt=e.target.value;$('#c-prompt').textContent=X.prompt.length;$('#e-prompt').textContent='';e.target.removeAttribute('aria-invalid');renderDet()};
+$('#code').onchange=e=>{X.code=e.target.checked;renderDet(true)};
+
+let sig='';
+function renderDet(force){
+  const fs=fields(),s=fs.map(f=>f.key).join('|');
+  if(!force&&s===sig)return;sig=s;
+  const txt=fs.filter(f=>f.kind!=='file');
+  $('#det').innerHTML=!X.prompt.trim()?'<h3>Fill-in fields</h3><p class="s">Placeholders in [BRACKETS] are detected here as you type.</p>'
+   :!fs.length?`<h3>No fill-ins detected</h3><p class="s">${X.code?'Bracket detection is switched off for this prompt.':'Viewers will copy the prompt as written. Add [BRACKETS] around anything they should change.'}</p>`
+   :`<h3>${fs.length} fill-in${fs.length>1?'s':''} detected</h3><p class="s">Viewers get an input for each. Add an example value to show them what goes there (optional).</p>`+
+    fs.map((f,i)=>`<div class="row"><div class="nm">${esc(f.label)}<span class="badge">${f.kind==='file'?'attachment':f.kind==='long'?'long text':'text'}</span></div>${f.kind==='file'?'<div class="s" style="font-size:12.5px;color:var(--stone)">Shown as a reminder to attach the file when running the prompt.</div>':`<input type="text" data-ex="${esc(f.key)}" aria-label="Example for ${esc(f.label)}" placeholder="Example, e.g. ${esc(f.label.toLowerCase())}" value="${esc(X.ex[f.key]||'')}" maxlength="80">`}</div>`).join('');
+}
+$('#det').oninput=e=>{const i=e.target.closest('[data-ex]');if(i)X.ex[i.dataset.ex]=i.value.trim()};
+
+/* tags */
+function renderTags(){$('#tags').innerHTML=X.tags.map((t,i)=>`<span class="tg">${esc(t)}<button type="button" data-tr="${i}" aria-label="Remove ${esc(t)}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></span>`).join('');renderSug()}
+function addTag(v){
+  v=v.toLowerCase().replace(/[^a-z0-9 \-]/g,'').trim().replace(/\s+/g,' ');if(!v)return;
+  if(X.tags.includes(v))return;if(X.tags.length>=8){$('#e-tags').textContent='Up to 8 tags.';return}
+  X.tags.push(v);$('#e-tags').textContent='';renderTags();
+}
+function renderSug(){
+  const s=[X.tool,X.cat].filter(Boolean).map(t=>t.toLowerCase().replace(/[^a-z0-9 \-]/g,'').replace(/\s+/g,' ').trim()).filter(t=>t&&!X.tags.includes(t));
+  $('#sug').innerHTML=s.length?'Quick add: '+s.map(t=>`<button type="button" data-sg="${esc(t)}">+ ${esc(t)}</button>`).join(''):'';
+}
+$('#sug').onclick=e=>{const b=e.target.closest('[data-sg]');if(b)addTag(b.dataset.sg)};
+$('#tags').onclick=e=>{const b=e.target.closest('[data-tr]');if(b){X.tags.splice(+b.dataset.tr,1);renderTags()}};
+$('#tagin').onkeydown=e=>{
+  const v=e.target.value;
+  if(e.key==='Enter'||e.key===','){e.preventDefault();addTag(v);e.target.value=''}
+  else if(e.key==='Backspace'&&!v&&X.tags.length){X.tags.pop();renderTags()}
+};
+$('#tagin').onblur=e=>{addTag(e.target.value);e.target.value=''};
+$('#tagbox').onclick=()=>$('#tagin').focus();
+
+/* ---------- step 3 ---------- */
+function promptMarked(){return tokens(X.prompt).map(t=>!t.p?esc(t.s):`<mark${t.kind==='file'?' class="file"':''}>${esc(t.s)}</mark>`).join('')}
+function renderReview(){
+  const c=X.imgs[0],r=c?Math.min(Math.max(c.w/c.h,.66),1.78):1,fs=fields();
+  $('#pcard').innerHTML=`<div class="m" style="aspect-ratio:${r}">${c?`<img src="${c.url}" alt="" style="width:100%;height:100%;object-fit:cover">`:''}<span class="tt">${esc(X.tool)}</span></div>
+   <div class="b"><h3>${esc(X.title)}</h3><div class="mt">You · ${esc(X.cat)}</div><p>${esc(X.prompt)}</p></div>`;
+  $('#ppr').innerHTML=promptMarked();
+  const ex=fs.filter(f=>X.ex[f.key]).length;
+  $('#psum').innerHTML=`<b>Tool</b> ${esc(X.tool)}<br><b>Category</b> ${esc(X.cat)}<br><b>Images</b> ${X.imgs.length}<br><b>Tags</b> ${X.tags.map(esc).join(', ')}<br><b>Fill-ins</b> ${fs.length?fs.map(f=>esc(f.label)).join(', ')+` (${ex} with examples)`:'none'}${X.neg.trim()?`<br><b>Avoid</b> ${esc(X.neg.trim())}`:''}`;
+}
+
+/* ---------- navigation + validation ---------- */
+function fail(id,msg,inputId){$('#'+id).textContent=msg;if(inputId)$('#'+inputId).setAttribute('aria-invalid','true')}
+function validate(n){
+  let ok=true,first=null;const bad=(id,msg,inp)=>{fail(id,msg,inp);ok=false;first=first||inp||id};
+  if(n===1){if(!X.tool)bad('e-tool','Choose the tool you used.');if(!X.imgs.length)bad('e-img','Add at least one result image.')}
+  if(n===2){
+    const t=X.title.trim();
+    if(t.length<5)bad('e-title','Give it a title of at least 5 characters.','title');
+    if(!X.cat)bad('e-cat','Choose a category.','cat');
+    if(X.prompt.trim().length<20)bad('e-prompt','The prompt should be at least 20 characters.','prompt');
+    if(!X.tags.length)bad('e-tags','Add at least one tag so people can find it.');
+  }
+  if(n===3&&!X.agree){bad('e-agree','Please confirm before publishing.')}
+  if(!ok){const el=document.getElementById(first);if(el&&el.focus)el.focus();else $('#'+first).scrollIntoView({block:'center'})}
+  return ok;
+}
+function go(n){
+  X.step=n;
+  ['s1','s2','s3'].forEach((id,i)=>$('#'+id).hidden=i+1!==n);
+  $('#back').hidden=n===1;$('#next').textContent=n===3?'Publish prompt':'Continue';
+  $('#hintbar').textContent=`Step ${n} of 3`;
+  $('#steps').innerHTML=['Tool & images','Prompt','Review'].map((l,i)=>`<div class="stp ${i+1===n?'on':i+1<n?'done':''}" ${i+1<n?`data-g="${i+1}" role="button" tabindex="0"`:''}><b>${i+1}. ${l}</b></div>`).join('');
+  if(n===3)renderReview();
+  window.scrollTo({top:0});$('#h1'+'abc'[n-1]).focus({preventScroll:true});
+}
+$('#steps').onclick=e=>{const s=e.target.closest('[data-g]');if(s&&!X.busy)go(+s.dataset.g)};
+$('#steps').onkeydown=e=>{if(e.key==='Enter'){const s=e.target.closest('[data-g]');if(s&&!X.busy)go(+s.dataset.g)}};
+$('#back').onclick=()=>{if(!X.busy)go(X.step-1)};
+$('#agree').onchange=e=>{X.agree=e.target.checked;$('#e-agree').textContent=''};
+$('#next').onclick=async()=>{
+  if(X.busy||!validate(X.step))return;
+  if(X.step<3)return go(X.step+1);
+  X.busy=true;const b=$('#next');b.disabled=true;$('#back').disabled=true;b.innerHTML='<span class="spin"></span>Publishing';$('#banner').hidden=true;
+  const fs=fields();
+  try{
+    await publishPrompt({title:X.title.trim(),tool:X.tool,category:X.cat,tags:X.tags,prompt:X.prompt,negativePrompt:X.neg.trim(),treatBracketsAsCode:X.code,
+      placeholders:fs.map(f=>({key:f.key,label:f.label,kind:f.kind,example:X.ex[f.key]||''})),images:X.imgs.map(o=>o.file),coverIndex:0});
+    X.done=true;['s1','s2','s3'].forEach(id=>$('#'+id).hidden=true);$('#steps').hidden=true;$('#bar').hidden=true;$('#done').hidden=false;window.scrollTo({top:0});
+  }catch(err){
+    $('#banner').textContent="We couldn't publish your prompt. Your work is still here, so please try again.";$('#banner').hidden=false;window.scrollTo({top:0});
+  }
+  X.busy=false;b.disabled=false;$('#back').disabled=false;if(!X.done)b.textContent='Publish prompt';
+};
+$('#again').onclick=()=>location.reload();
+
+/* warn before losing work */
+window.addEventListener('beforeunload',e=>{if(!X.done&&(X.imgs.length||X.title||X.prompt)){e.preventDefault();e.returnValue=''}});
+$('#cancel').onclick=e=>{if(!X.done&&(X.imgs.length||X.title||X.prompt)&&!confirm('Discard this upload?'))e.preventDefault()};
+
+go(1);renderDet(true);renderTags();
+</script>
+</body>
+</html>

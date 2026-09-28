@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt — Gentrove</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Syne:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1A4BF5;--paper:#F7F6F2;--ink:#171717;--stone:#73716C;--surface:#EEECE6;--line:#E2DFD7;--white:#fff;
+--shadow:0 1px 2px rgba(23,23,23,.05),0 4px 14px rgba(26,75,245,.05);--shadow-h:0 2px 4px rgba(23,23,23,.06),0 10px 24px rgba(26,75,245,.07);--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;padding-bottom:140px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.display{font-family:'Syne',sans-serif;font-weight:500;letter-spacing:-.02em}
+.nav{position:sticky;top:0;z-index:30;background:rgba(247,246,242,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.nav-in{max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
+.logo{font-family:'Syne',sans-serif;font-weight:500;font-size:20px;letter-spacing:-.03em}.logo span{color:var(--blue)}
+.links{display:none;gap:22px;font-size:14px;color:var(--stone)}.links a:hover{color:var(--ink)}
+.nav-r{display:flex;align-items:center;gap:4px;margin-left:auto}
+.icon-btn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--stone)}
+.icon-btn:hover{background:var(--surface);color:var(--ink)}
+.btn{height:38px;padding:0 16px;border-radius:10px;background:var(--blue);color:#fff;font-size:14px;font-weight:500;display:none;align-items:center}
+.wrap{max-width:1400px;margin:0 auto;padding:0 20px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--stone);padding:16px 0}.back:hover{color:var(--ink)}
+
+/* DETAIL */
+.detail{display:grid;gap:20px;padding-bottom:32px}
+.hero{background:var(--white);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.hero-img{position:relative;width:100%;max-height:78vh}
+.art{position:absolute;inset:0;opacity:0;transition:opacity .3s}.art.loaded{opacity:1}
+.tool-tag{position:absolute;left:12px;top:12px;font-size:11px;font-weight:500;padding:3px 8px;border-radius:6px;background:rgba(23,23,23,.62);color:#fff}
+.info h1{font-size:28px;line-height:1.15}
+.by{display:flex;align-items:center;gap:10px;margin:14px 0 4px;font-size:14px}
+.av{width:34px;height:34px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-size:13px;font-weight:500;color:var(--stone)}
+.by small{color:var(--stone);display:block;font-size:12px;line-height:1.3}
+.pbox{margin-top:16px;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14.5px;line-height:1.7;white-space:pre-wrap}
+.pbox mark{background:#E8F0FF;color:var(--blue);border-radius:4px;padding:0 3px}
+.acts{display:flex;gap:10px;margin-top:14px}
+.copy{height:42px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--white);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+.copy:hover{border-color:var(--ink)}
+.copy.main{flex:1;background:var(--blue);border-color:var(--blue);color:#fff}
+.copy.main.done{background:var(--ink);border-color:var(--ink)}
+.copy.on{color:var(--blue);border-color:var(--blue)}.copy.on svg{fill:var(--blue)}
+.params{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:18px}
+.params div{background:var(--paper);padding:10px 12px;font-size:13px}
+.params span{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12px;padding:4px 11px;border-radius:100px;background:var(--surface);color:var(--stone)}.chip:hover{color:var(--ink)}
+.sec{display:flex;align-items:baseline;justify-content:space-between;padding:24px 0 14px;border-top:1px solid var(--line)}
+.sec h2{font-size:22px}.sec span{font-size:13px;color:var(--stone)}
+
+/* GRID */
+.grid{columns:2;column-gap:14px}
+.card{break-inside:avoid;margin-bottom:18px;background:var(--white);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;opacity:0;transform:translateY(14px);transition:opacity .42s var(--ease),transform .42s var(--ease),box-shadow .2s}
+.card.in{opacity:1;transform:none}
+.card.in:hover{transform:translateY(-4px);box-shadow:var(--shadow-h);transition:transform .2s ease-out,box-shadow .2s ease-out}
+.media{position:relative;overflow:hidden;cursor:pointer;display:block;width:100%}
+.card:hover .art{transform:scale(1.02)}.card .art{transition:transform .2s ease-out,opacity .3s}
+.body{padding:12px 14px 14px}
+.title{font-family:'Syne',sans-serif;font-weight:500;font-size:16px;line-height:1.25;letter-spacing:-.01em;cursor:pointer}
+.meta{font-size:12px;color:var(--stone);margin-top:3px}
+.preview{font-size:13px;color:var(--stone);margin-top:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.55}
+.foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;font-size:12px;color:var(--stone)}
+.foot b{color:var(--ink);font-weight:500}
+.cbtn{height:34px;padding:0 12px;border-radius:9px;border:1px solid var(--line);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s}
+.cbtn:hover{border-color:var(--ink)}.cbtn.done{background:var(--blue);border-color:var(--blue);color:#fff}
+.sk{break-inside:avoid;margin-bottom:18px;border-radius:16px;background:var(--surface);position:relative;overflow:hidden}
+.sk::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-100%);animation:sh 1.3s infinite}
+@keyframes sh{to{transform:translateX(100%)}}
+.ad{break-inside:avoid;margin-bottom:18px;border:1px dashed var(--line);border-radius:16px;padding:28px 14px;text-align:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
+#sentinel{height:1px}
+.err{padding:12px 14px;border-radius:10px;background:#fff3f0;color:#a2361f;font-size:13px;margin-bottom:12px;display:none}
+
+/* MOBILE BAR */
+.mbar{position:fixed;left:0;right:0;bottom:56px;z-index:25;background:var(--paper);border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:10px}
+.mbar .copy{height:44px}
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:var(--paper);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 0 max(6px,env(safe-area-inset-bottom))}
+.tabbar a{display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--stone);gap:1px;padding:4px 10px}.tabbar a.on{color:var(--blue)}
+.toast{position:fixed;left:50%;bottom:130px;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:13px;padding:8px 14px;border-radius:10px;z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+
+.thumbs{display:flex;gap:8px;padding:12px}
+.thumb{width:60px;height:60px;border-radius:10px;overflow:hidden;border:2px solid transparent;flex-shrink:0;padding:0}.thumb.on{border-color:var(--blue)}
+.stats{display:flex;gap:18px;font-size:13px;color:var(--stone);margin-top:8px;flex-wrap:wrap}.stats b{color:var(--ink);font-weight:500}
+.follow{margin-left:auto;height:34px;padding:0 14px;border-radius:9px;border:1px solid var(--line);font-size:13px;font-weight:500}.follow.on{background:var(--surface)}
+.vars{display:grid;gap:10px}.vars label{font-size:12px;color:var(--stone);display:block;margin-bottom:2px}
+.vars input,.cform input{width:100%;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--white);padding:0 12px;font:inherit;font-size:14px;color:var(--ink)}
+.vars input:focus,.cform input:focus{outline:none;border-color:var(--blue)}
+.pbox mark.f{background:#FFF3B8;color:var(--ink)}
+.block{margin-top:24px}.block h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-weight:500;margin-bottom:10px}
+.tips{list-style:none;display:grid;gap:8px}.tips li{font-size:14px;padding-left:16px;position:relative}.tips li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.neg{font-size:13.5px;color:var(--stone);background:var(--surface);border-radius:10px;padding:10px 12px}
+.cm{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.cm p{font-size:14px}.cm small{color:var(--stone);font-size:12px}
+.cform{display:flex;gap:8px;margin-top:14px}.cform button{height:40px;padding:0 16px;border-radius:10px;background:var(--ink);color:#fff;font-size:14px;font-weight:500}.cform button:disabled{opacity:.35;cursor:not-allowed}
+.vars textarea{width:100%;border-radius:10px;border:1px solid var(--line);background:var(--white);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);resize:vertical}
+.vars textarea:focus{outline:none;border-color:var(--blue)}
+.pbox mark.file{background:transparent;outline:1px dashed var(--blue);outline-offset:1px}
+.card{position:relative}
+.save-ov{position:absolute;top:10px;right:10px;z-index:2;width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.94);display:grid;place-items:center;color:var(--ink);box-shadow:var(--shadow);opacity:0;transition:opacity .2s}
+.card:hover .save-ov,.save-ov:focus-visible,.save-ov.on{opacity:1}
+.save-ov.on,.copy.on{color:var(--blue)}.save-ov.on svg{fill:var(--blue)}
+@media(hover:none){.save-ov{opacity:1}}
+.pk-ov{position:fixed;inset:0;z-index:70;background:rgba(23,23,23,.5);display:none;align-items:flex-end;justify-content:center}.pk-ov.open{display:flex}
+.pk-md{background:var(--paper);width:100%;max-width:440px;border-radius:18px 18px 0 0;padding:22px 20px max(22px,env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+.pk-md h2{font-family:'Syne',sans-serif;font-weight:500;font-size:22px;letter-spacing:-.02em}
+.pk-sub{color:var(--stone);font-size:14px;margin:2px 0 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pk-list{display:grid;gap:2px;max-height:40vh;overflow:auto;margin-bottom:10px}
+.pk-row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;cursor:pointer;font-size:14px}.pk-row:hover{background:var(--surface)}
+.pk-row input{accent-color:var(--blue);width:18px;height:18px}.pk-row span{flex:1}.pk-row small{color:var(--stone)}
+.pk-new{display:flex;gap:8px}.pk-new input{flex:1;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--white);padding:0 12px;font:inherit;font-size:14.5px;color:var(--ink)}.pk-new input:focus{outline:none;border-color:var(--blue)}
+.pk-b{height:42px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--white);font-size:14px;font-weight:500}.pk-b:hover{border-color:var(--ink)}
+.pk-b.p{background:var(--blue);border-color:var(--blue);color:#fff}
+.pk-er{color:#B4381F;font-size:12.5px;min-height:18px;margin-top:4px}
+.pk-done{display:flex;justify-content:space-between;align-items:center;margin-top:10px}.pk-done a{font-size:13px;color:var(--blue)}
+@media(min-width:700px){.pk-ov{align-items:center}.pk-md{border-radius:18px}}
+@media(min-width:700px){.grid{columns:3}}
+@media(min-width:960px){
+ .grid{columns:4;column-gap:18px}.links{display:flex}.btn{display:flex}.tabbar,.mbar{display:none}body{padding-bottom:40px}.toast{bottom:24px}
+ .detail{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:start}
+ .hero{position:sticky;top:76px}.info h1{font-size:34px}}
+@media(min-width:1280px){.grid{columns:5}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.card{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="nav-in">
+  <a href="index.html" class="logo">Gen<span>trove</span></a>
+  <nav class="links"><a href="explore.html">Explore</a><a href="feed.html">Categories</a><a href="collections.html">Collections</a></nav>
+  <div class="nav-r">
+    <a class="icon-btn" href="notifications.html" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></a>
+    <a class="icon-btn" href="settings.html" aria-label="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke-linecap="round"/></svg></a>
+    <a class="btn" href="upload-wizard.html">Upload</a>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <a class="back" href="feed.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg>Feed</a>
+  <div class="err" id="err"></div>
+  <section class="detail" id="detail"></section>
+  <div class="sec"><h2 class="display">More like this</h2><span id="relNote"></span></div>
+  <div class="grid" id="grid"></div>
+  <div id="sentinel"></div>
+</main>
+
+<div class="mbar" id="mbar"></div>
+<nav class="tabbar" aria-label="Primary">
+  <a href="feed.html" class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Feed</a>
+  <a href="explore.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Explore</a>
+  <a href="upload-wizard.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Upload</a>
+  <a href="collections.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Saved</a>
+  <a href="profile.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Profile</a>
+</nav>
+<div class="toast" id="toast" role="status">Prompt copied</div>
+<script>
+const INDUSTRIES=["Real Estate","Fashion & Lifestyle","Food & Pastry","Church / Faith","Tech & Gadgets","Events & Weddings","Beauty & Cosmetics","Fitness & Wellness","Automotive","Finance & Fintech","Retail & E-commerce","Schools & Education Brands","Agriculture","Logistics & Delivery","Nonprofit / NGO","Healthcare & Medical","Legal"];
+const OUTPUTS=["Marketing & Copywriting","Coding & Automation","Data Analytics","Education","3D & Game Design","Audio & Music","UI/UX & Web Design"];
+const TOOLS=["All","Midjourney","Nano Banana","GPT Image","FLUX.2","Veo 3.1","Claude","ChatGPT","Gemini","Cursor","Suno"];
+
+/* Sample data. image:null → gradient fallback. Swap in real /images/ paths later. */
+const P=[
+["Sunlit penthouse listing hero","Real Estate","Nano Banana","Tunde A.",1284,312,3,4,"c1","Photorealistic wide shot of a [PROPERTY TYPE] living room at golden hour, warm oak floors, linen sofa, floor-to-ceiling windows overlooking [CITY] skyline, soft haze, shot on 35mm, editorial real estate photography, no people.",["luxury","listing","interior"]],
+["Sunday service flyer, gold on black","Church / Faith","Nano Banana","Grace O.",2140,540,4,5,"c2","Design a bold church event flyer, 4:5. Headline '[EVENT NAME]' in large serif, gold foil texture on deep black, subtle light rays behind a silhouette of raised hands. Include date '[DATE]', venue '[VENUE]', clean grid, generous spacing.",["flyer","gold","service"]],
+["Pastry box, morning light","Food & Pastry","Midjourney","Amaka E.",930,201,1,1,"c3","Overhead flat lay of a kraft pastry box with croissants and pain au chocolat, flour dust, linen napkin, soft morning window light, shallow depth of field, muted warm palette --ar 1:1 --style raw",["bakery","flatlay","warm"]],
+["Landing page hero for a fintech app","UI/UX & Web Design","Claude","Kola B.",1760,410,3,2,"c4","Design a landing page hero for a fintech app called [APP NAME]. Quiet editorial layout, off-white background, one strong headline, product mockup on the right, single blue CTA. Output a complete responsive HTML file with inline CSS.",["fintech","hero","web"]],
+["Matte tech unboxing scene","Tech & Gadgets","GPT Image","Femi R.",702,148,4,5,"c5","Product photograph of a matte black [DEVICE] on a concrete slab, dramatic side light, thin rim highlight, deep shadows, minimal styling, 85mm lens, high-end tech campaign look.",["product","dark","minimal"]],
+["Bridal editorial, ivory and sage","Events & Weddings","Midjourney","Zainab M.",1490,360,2,3,"c6","Editorial bridal portrait in a walled garden, ivory silk gown, sage green florals, backlit late afternoon sun, film grain, Kodak Portra 400 --ar 2:3",["bridal","garden","film"]],
+["Weekly sales report analyst","Data Analytics","Claude","Ibrahim S.",640,175,2,1,"c7","You are a senior retail analyst. Given the pasted sales CSV, summarise revenue by week, flag the three biggest movers with likely causes, and finish with two recommended actions. Keep it under 200 words and use a table for numbers.",["report","csv","retail"]],
+["Retro synthwave city loop","Audio & Music","Suno","Dele K.",488,96,1,1,"c8","Instrumental synthwave, 96 BPM, warm analog bass, gated snare, dreamy arpeggios, night-drive mood, slow build into a euphoric chorus, no vocals.",["synthwave","instrumental"]],
+["Skincare bottle on wet stone","Beauty & Cosmetics","FLUX.2","Ngozi P.",1105,254,3,4,"c9","Skincare serum bottle resting on wet grey stone, fine water droplets, soft diffused light, pale sage backdrop, clean luxury beauty advertising, macro detail on glass and label.",["skincare","macro","clean"]],
+["React auth form with validation","Coding & Automation","Cursor","Sam T.",877,230,1,1,"c10","Build an accessible sign-up form component in React with email and password fields, inline validation, disabled submit until valid, and a visible loading state. Include unit tests. Do not add extra dependencies.",["react","forms"]],
+["Cinematic dawn drive, coastal road","Automotive","Veo 3.1","Chidi N.",1320,289,16,9,"c11","Cinematic tracking shot of a dark SUV driving a coastal road at dawn, low sun flare, mist over the sea, subtle handheld feel, 24fps, no text, ambient engine hum.",["video","cinematic","suv"]],
+["Low-poly farm diorama","3D & Game Design","Nano Banana","Yusuf L.",412,88,1,1,"c12","Isometric low-poly farm diorama with a red barn, maize rows and a small tractor, soft pastel palette, clean shadows, game-asset style, neutral background.",["isometric","lowpoly"]],
+["Launch week email sequence","Marketing & Copywriting","ChatGPT","Bisi A.",1560,402,2,1,"c13","Write a 5-email launch sequence for [PRODUCT] targeting [AUDIENCE]. Each email: subject line, 90-word body, one CTA. Tone: confident and warm, no hype words. Add a one-line purpose note above each email.",["email","launch"]],
+["Gym campaign, high-contrast portrait","Fitness & Wellness","Midjourney","Emeka D.",760,170,3,4,"c14","Athlete portrait mid-training in a dim gym, hard rim light, chalk dust in the air, sweat detail, desaturated palette with one warm accent --ar 3:4 --style raw",["gym","portrait"]],
+["Grade 6 fractions lesson plan","Education","Gemini","Mrs. Okoro",530,140,2,1,"c15","Create a 40-minute lesson plan on equivalent fractions for Grade 6. Include a warm-up, a visual model, three worked examples, a group task and an exit ticket. Add differentiation notes.",["lesson","maths"]],
+["Ankara editorial, studio backdrop","Fashion & Lifestyle","Nano Banana","Tola F.",1980,470,2,3,"c16","Fashion editorial of a model in a tailored Ankara set, seamless mustard backdrop, single large softbox, confident stance, crisp fabric texture, full-length framing.",["ankara","studio","editorial"]],
+["Jollof festival poster","Food & Pastry","Nano Banana","Ada C.",1420,330,4,5,"c17","Vibrant poster for a [EVENT NAME] food festival: steaming party jollof in a wide copper pot, charred plantain, string lights at dusk, bold hand-lettered headline, warm reds and golds, room for the date '[DATE]' at the bottom.",["poster","jollof","festival"]],
+["Tailored suit lookbook","Fashion & Lifestyle","Midjourney","Femi R.",1010,240,2,3,"c18","Menswear lookbook shot, charcoal double-breasted suit, Lagos rooftop at blue hour, city bokeh, confident stride, soft fill flash, fashion magazine grain --ar 2:3",["menswear","lookbook"]],
+["Estate brochure cover","Real Estate","GPT Image","Tunde A.",860,190,3,4,"c19","Brochure cover for [ESTATE NAME]: aerial view of a gated estate with palm-lined roads at sunrise, elegant serif title, muted gold accents, plenty of negative space for the tagline.",["brochure","estate","aerial"]],
+["Youth conference stage design","Church / Faith","Nano Banana","Grace O.",970,215,16,9,"c20","Wide stage design render for the [EVENT NAME] youth conference: layered LED wall, warm amber wash, haze, tiered platforms, silhouette of a worship team, cinematic atmosphere.",["stage","conference"]],
+["Fintech dashboard, quiet UI","UI/UX & Web Design","Claude","Kola B.",1240,300,3,2,"c21","Design a spending dashboard for [APP NAME]. Off-white canvas, one accent blue, large balance figure, weekly bar chart, three recent transactions. Output one responsive HTML file.",["dashboard","fintech"]],
+["Podcast intro jingle","Audio & Music","Suno","Dele K.",390,74,1,1,"c22","Upbeat 12-second podcast intro, marimba and finger snaps, warm bass, bright bell hit at the end, no vocals, clean loopable ending.",["jingle","podcast"]],
+["Smartwatch macro on slate","Tech & Gadgets","FLUX.2","Femi R.",810,167,4,5,"c23","Macro product shot of a titanium smartwatch on dark slate, crisp reflections on the sapphire glass, single cool rim light, ultra sharp, premium campaign style.",["watch","macro"]],
+["Weekly meal prep planner","Fitness & Wellness","ChatGPT","Bisi A.",1180,290,2,1,"c24","Create a 7-day high-protein meal prep plan for [GOAL] using affordable Nigerian ingredients. Include a shopping list grouped by market section and a 20-minute Sunday prep routine.",["mealprep","planner"]],
+["Contract summary in plain English","Legal","Claude","Sam T.",720,160,2,1,"c25","Summarise the pasted contract in plain English. List obligations for each party, deadlines, termination terms and any clause that looks unusual. Finish with five questions to ask a lawyer.",["contract","summary"]],
+["Solar farm at golden hour","Agriculture","Veo 3.1","Yusuf L.",530,112,16,9,"c26","Slow aerial glide over rows of solar panels beside green farmland at golden hour, workers walking between rows, warm long shadows, gentle wind sound.",["aerial","solar","video"]],
+["Dispatch rider in the rain","Logistics & Delivery","GPT Image","Emeka D.",640,131,3,4,"c27","Dispatch rider on a motorbike delivering a parcel in evening rain, reflections on wet tarmac, glowing shop signs, shallow depth of field, documentary style.",["delivery","rain"]],
+["Fundraising appeal letter","Nonprofit / NGO","ChatGPT","Mrs. Okoro",480,98,2,1,"c28","Write a 300-word fundraising appeal for [CAUSE]. Open with one specific person's story, state the need with one number, make a single clear ask of [AMOUNT], close with a warm thank-you.",["appeal","donations"]],
+["Clinic reception, calm and bright","Healthcare & Medical","Nano Banana","Ngozi P.",590,120,3,2,"c29","Interior of a modern clinic reception, pale wood, soft daylight, a friendly receptionist at the desk, plants, clean signage, calm reassuring mood, architectural photography.",["clinic","interior"]],
+["Clean messy sales data with Python","Data Analytics","Cursor","Ibrahim S.",920,244,1,1,"c30","Write a Python script that loads sales.csv, standardises column names, fixes date formats, removes duplicates, fills missing prices with the category median and saves clean_sales.csv. Log every change.",["python","cleaning"]],
+["Wedding invite suite, blush and gold","Events & Weddings","Midjourney","Zainab M.",1330,310,4,5,"c31","Flat lay of a wedding invitation suite for [COUPLE NAMES], blush paper, gold foil script, dried pampas, wax seal, soft window light --ar 4:5",["invitation","blush"]],
+["Boutique window display","Retail & E-commerce","Midjourney","Amaka E.",670,142,3,4,"c32","Boutique storefront window at dusk with a sculptural mannequin display, warm spotlights, reflective glass, seasonal sale sign reading '[OFFER]' --ar 3:4",["storefront","retail"]],
+["Botanical skincare flyer, glass-skin portrait","Beauty & Cosmetics","Nano Banana","Ngozi P.",2260,548,1,1,"c33","FORMAT: \nPhotorealistic social media flyer, 1:1 square format (1080×1080px), fresh green luxury skincare brand — clean and botanical\nBACKGROUND:\nVery soft sage-to-lime-white gradient background (#E8F0D5 to #F5FAE8) — cool, fresh, botanical. The color evokes clean nature, plant extracts, and natural luxury. Absolutely clean — no textures, no grain, no patterns. A single fresh green botanical leaf (real or illustrated style) appears floating in front of the subject's cheek/eye area — a key decorative brand element that reinforces the natural ingredients story.\nSUBJECT:\nA strikingly beautiful very dark-skinned Nigerian woman in her late 20s [INSERT CLIENT PHOTO HERE], photorealistic. Positioned right of center, portrait from collarbone upward. Face turned slightly left, eyes forward, gaze direct and serene. Expression: calm, regal, radiantly healthy. Immaculate glowing skin — dewy, smooth, luminous. Defined brows, warm bronze eyeshadow, nude lip. No jewelry. Natural or pulled-back hair. Her right hand raised to the side of her face in a graceful, contemplative pose. A single fresh green leaf touches/rests against her cheek — intimate botanical detail.\nLIGHTING:\nClean, balanced beauty lighting. Soft frontal diffused light. Even exposure — no dramatic shadows. Skin appears lit from within — the \"glass skin\" editorial beauty effect. A very subtle warm undertone in the lighting reinforces the glow and health messaging.\nCOMPOSITION:\nLeft text column. Top-right: logo lockup (leaf icon + brand name). Left: large 3-line editorial headline. Below headline: soft rounded rectangle body copy box (light sage fill). Below body copy: outlined pill services label + services list with checkmark bullets. Portrait subject on right half. Footer: clean white band, centered website URL with search/globe icon. Reading flow: Logo → headline → body copy → services → portrait → website.\nDECORATIVE ELEMENTS:\nLogo: stylized green leaf/plant icon. \"[BRAND NAME]\" in bold dark green sans-serif beside it. Top-right placement.\nSoft pale sage rounded rectangle behind the body copy — like a subtle card, very light green fill\n\"Our Signature Services:\" services label: outlined pill with thin dark green border, no fill\nGreen checkmark (✓) bullets before each service item\nFresh botanical leaf element floating near subject's face — central design detail\nFooter: clean white band. Search/magnifying glass icon beside website URL centered.\nLOGO BLOCK:\nUpper right. Botanical leaf icon in deep green. \"[BRAND NAME]\" in bold dark green modern sans-serif. \"[SKIN BAR]\" micro-label below.\nTEXT OVERLAY (baked into image):\nLine 1 — Headline (left, large):\n\"[Your Glow\"\n\"deserves a\"\n\"little Luxury]\"\nLine 2 — Body copy (sage box):\n\"At [Brand Name], every treatment is crafted to [benefit] and reveal a [result].\"\nLine 3 — Services label:\n\"Our Signature Services:\"\nLine 4 — Services list (green checkmarks):\n✓ [Service 1]\n✓ [Service 2]\n✓ [Service 3]\n✓ [Service 4]\nLine 5 — Footer website:\n🔍 Visit our website: [www.brandwebsite.com]\nCOLOR PALETTE:\nSage Green White (#E8F0D5)\nDeep Forest Green (#1A4A00)\nFresh Leaf Green (#4CAF50)\nLight Sage Card (#D4E8C4)\nPure White (#FFFFFF)\nNear-Black Text (#0D1A00)\nSTYLE:\n\"Clean botanical luxury skincare brand. Fresh sage-green editorial aesthetic. Nigerian organic beauty campaign quality. Minimalist layout with maximum glow. Nature-meets-luxury visual identity.\"\nNEGATIVE PROMPT:\nNo watermarks. No blurry leaf detail. No flat skin tones. No dull green palette. No cold or sterile medical aesthetic. No cluttered layout. No low-quality botanical illustration. No generic stock-photo look.",["skincare","flyer","botanical","glass skin"]]
+];
+const GRADS={c1:["#f0d9b5","#8a6a4a"],c2:["#2a2a2a","#b8902a"],c3:["#f3e2c9","#c98a55"],c4:["#e8f0ff","#1A4BF5"],c5:["#2b2f38","#0d0f14"],c6:["#eef0e4","#9aa98a"],c7:["#e9e6dd","#73716C"],c8:["#3b2a63","#e2497a"],c9:["#dfe8e0","#8fa69a"],c10:["#171717","#3355CC"],c11:["#f2b58a","#1d2b3a"],c12:["#cfe3c4","#e2735c"],c13:["#fff2c2","#FFD000"],c14:["#3a3a3a","#c65a2e"],c15:["#e0ecf7","#7ea4cc"],c16:["#f4c542","#8a5a14"],c17:["#c8321e","#f2b84b"],c18:["#2c3138","#9aa3ad"],c19:["#f5e6c8","#5f8a6a"],c20:["#1a1030","#e28a2e"],c21:["#f4f6ff","#3355CC"],c22:["#ffdf7a","#e2497a"],c23:["#20242b","#5e6a78"],c24:["#dcebd2","#e08a3a"],c25:["#e9e6dd","#2c3a55"],c26:["#f7d38a","#3d7a4a"],c27:["#1e2a3a","#e2b04a"],c28:["#f6dcd0","#c5644a"],c29:["#e5f0f0","#8fb8b8"],c30:["#0d1f3c","#1A4BF5"],c31:["#f6dfe0","#c9a24b"],c32:["#e8d9c6","#3a2f2a"],c33:["#E8F0D5","#4CAF50"]};
+const DATA=P.map((p,i)=>({id:i,title:p[0],cat:p[1],tool:p[2],by:p[3],copies:p[4],likes:p[5],w:p[6],h:p[7],g:p[8],prompt:p[9],tags:p[10],img:null,ago:i,liked:false}));
+
+const EXTRA={32:{vars:{"BRAND NAME":"Zuri Botanics","SKIN BAR":"Skin Bar","Your Glow deserves a little Luxury":"Your Glow deserves a little Luxury","benefit":"hydrate and restore","result":"lasting natural glow","Service 1":"Hydrating Facial","Service 2":"Gentle Peel","Service 3":"Microneedling","Service 4":"Brightening Treatment","www.brandwebsite.com":"www.zuribotanics.com"},negative:"No watermarks, blurry leaf detail, flat skin tones, cluttered layout or stock-photo look.",tips:["Upload the client photo to the tool first, then paste the prompt so the face is used as the reference.","Keep the headline to three short lines so the text renders cleanly.","Ask for a 4:5 crop afterwards for Instagram feed posts."],model:"Nano Banana 2 · Google Labs FX",res:"2K",style:"Botanical luxury",posted:"5 days ago"},1:{vars:{"EVENT NAME":"Night of Worship","DATE":"Sunday, 12 October","VENUE":"Grace Chapel, Abuja"},negative:"No watermark, no extra text beyond the headline and details, no distorted hands, no cluttered background.",tips:["Swap gold for silver foil for a cooler, more modern feel.","Keep the headline under four words so it stays readable on a WhatsApp status.","Generate at 4:5 first, then ask for a 9:16 story version with the same layout."],model:"Nano Banana 2 · Google Labs FX",res:"2K",style:"Editorial, gold foil",posted:"3 weeks ago",comments:[["Chinedu O.","Used this for our harvest service and attendance jumped. Thank you!","2d ago"],["Halima B.","How do you keep the gold from looking flat?","4d ago"],["Grace O.","Add 'foil emboss, specular highlights' near the headline.","4d ago"],["Segun A.","Clean. Trying a purple version tonight.","1w ago"]]}};
+const S={cur:0,queue:[],cursor:0,seq:0,busy:false,V:{},thumb:0};
+const $=s=>document.querySelector(s);
+const fmt=n=>n>=1000?(n/1000).toFixed(1).replace('.0','')+'k':n;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const heart='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg>';
+const cpi='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
+const ANG=[145,215,75,300];
+const bg=(d,i=0)=>{const[a,b]=GRADS[d.g];return d.img?`url(${d.img}) center/cover`:`linear-gradient(${ANG[i]}deg,${a},${b})`};
+const artHTML=(d,i=0)=>`<div class="art" style="background:${bg(d,i)}"></div>`;
+function toast(m){const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),1600)}
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){try{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();return ok}catch(_){return false}}}
+const safeHistory=(fn,...a)=>{try{history[fn](...a)}catch(e){}};
+
+/* Fill-in engine: finds [bracketed] placeholders in ANY category's prompt. Case-insensitive, de-duplicated, skips code-like brackets. */
+const RE=/(^|[^\w)\]])(\[([^\[\]]{2,90})\])(?!\()/g;
+const norm=s=>s.replace(/["'“”]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+const isCode=c=>/[\\^*+?|{}=<>;]/.test(c)||!/[A-Za-z]{2}/.test(c)||/^\s*[a-z0-9]-[a-z0-9]/i.test(c)||/^\s*['"`].*['"`]\s*$/.test(c);
+const kindOf=c=>/\b(insert|upload|attach)\b/i.test(c)&&/\b(photo|image|picture|logo|reference|file|screenshot|csv|document|pdf|data)\b/i.test(c)?'file':/\bpaste\b/i.test(c)?'long':'text';
+const nice=c=>{const t=c.replace(/["“”]/g,'').replace(/\s+/g,' ').trim();return t===t.toUpperCase()?t.toLowerCase().replace(/\b\w/g,m=>m.toUpperCase()):t};
+function tokens(d){
+  if(d._t)return d._t;const s=d.prompt,out=[],re=new RegExp(RE.source,'g');let last=0,m;
+  while((m=re.exec(s))){const c=m[3];if(isCode(c))continue;const st=m.index+m[1].length;if(st>last)out.push({p:0,s:s.slice(last,st)});out.push({p:1,s:m[2],key:norm(c),label:nice(c),kind:kindOf(c)});last=st+m[2].length}
+  out.push({p:0,s:s.slice(last)});return d._t=out}
+const fieldsOf=d=>{const seen={};return tokens(d).filter(t=>t.p&&!seen[t.key]&&(seen[t.key]=1))};
+const filled=d=>tokens(d).map(t=>t.p&&t.kind!=='file'&&S.V[t.key]?S.V[t.key]:t.s).join('');
+function promptHTML(d){return tokens(d).map(t=>!t.p?esc(t.s):t.kind==='file'?`<mark class="file">${esc(t.s)}</mark>`:S.V[t.key]?`<mark class="f">${esc(S.V[t.key])}</mark>`:`<mark>${esc(t.s)}</mark>`).join('')}
+const extra=d=>{const x=Object.assign({negative:"No watermark, no extra text, no distorted details.",tips:["Replace every highlighted placeholder before you run the prompt.","Run it 3 or 4 times and keep the strongest result.","Save your favourite version to a collection so you can find it again."],model:d.tool,res:"2K",style:d.cat,posted:"2 weeks ago",comments:[["Amaka E.","Worked first try. Saving this one.","1d ago"],["Tunde A.","Great structure, I changed the palette and it still holds up.","5d ago"]]},EXTRA[d.id]||{});const v={};for(const k in (x.vars||{}))v[norm(k)]=x.vars[k];x.vars=v;return x};
+
+function rank(cur){const c=DATA[cur];return DATA.filter(d=>d.id!==cur).map(d=>({d,s:(d.cat===c.cat?4:0)+(d.tool===c.tool?2:0)+d.tags.filter(t=>c.tags.includes(t)).length+d.copies/1e5})).sort((a,b)=>b.s-a.s).map(x=>x.d)}
+
+function commentHTML(c){return `<div class="cm"><div class="av">${esc(c[0][0])}</div><div><small><b style="color:var(--ink);font-weight:500">${esc(c[0])}</b> · ${esc(c[2])}</small><p>${esc(c[1])}</p></div></div>`}
+
+function renderDetail(){
+  const d=DATA[S.cur],x=extra(d),fs=fieldsOf(d),tf=fs.filter(f=>f.kind!=='file'),ff=fs.filter(f=>f.kind==='file');S.V={};S.thumb=0;document.title=d.title+' — Gentrove';
+  const params=[['Tool',x.model],['Category',d.cat],['Ratio',d.w+':'+d.h],['Resolution',x.res],['Style',x.style],['Posted',x.posted]];
+  $('#detail').innerHTML=`
+   <div class="hero"><div class="hero-img" id="heroImg" style="aspect-ratio:${d.w}/${d.h}">${artHTML(d)}<span class="tool-tag">${d.tool}</span></div>
+     <div class="thumbs" role="group" aria-label="Result variations">${ANG.map((a,i)=>`<button class="thumb ${i?'':'on'}" data-th="${i}" aria-label="Result ${i+1}"><div class="art loaded" style="position:absolute;inset:0;opacity:1;background:${bg(d,i)}"></div></button>`).join('')}</div></div>
+   <div class="info">
+    <h1 class="display">${esc(d.title)}</h1>
+    <div class="by"><div class="av">${esc(d.by[0])}</div><div>${esc(d.by)}<small>1.2k followers</small></div><button class="follow" id="fol">Follow</button></div>
+    <div class="stats"><span><b>${fmt(d.copies)}</b> copies</span><span><b id="lc">${fmt(d.likes)}</b> likes</span><span><b>${fmt(Math.round(d.likes*.6))}</b> saves</span><span><b>${fmt(d.copies*6)}</b> views</span></div>
+    ${fs.length?`<div class="block"><h3>Fill in your details</h3>${ff.length?`<div class="neg" style="margin-bottom:10px">Attach when you run it: ${ff.map(f=>`<b>${esc(f.label)}</b>`).join(', ')}</div>`:''}<div class="vars">${tf.map((f,i)=>`<div><label for="v${i}">${esc(f.label)}</label>${f.kind==='long'?`<textarea id="v${i}" data-v="${esc(f.key)}" rows="3" placeholder="${esc(x.vars[f.key]||f.label)}"></textarea>`:`<input id="v${i}" data-v="${esc(f.key)}" placeholder="${esc(x.vars[f.key]||f.label)}">`}</div>`).join('')}</div>${tf.length?`<div class="stats" id="prog">0 of ${tf.length} filled</div>`:''}</div>`:''}
+    <div class="block"><h3>Prompt</h3><div class="pbox" id="pbox">${promptHTML(d)}</div>
+    <div class="acts"><button class="copy main" id="cpy">${cpi}<span>Copy prompt</span></button>
+      <button class="copy ${d.liked?'on':''}" id="lk" aria-label="Like" aria-pressed="${d.liked}">${heart}</button>
+      <button class="copy ${savedIn(d.id).length?'on':''}" id="sv" data-save="${d.id}" aria-label="Save to collection"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button></div></div>
+    <div class="block"><h3>Avoid</h3><div class="neg">${esc(x.negative)}</div></div>
+    <div class="block"><h3>Details</h3><div class="params">${params.map(p=>`<div><span>${p[0]}</span>${esc(p[1])}</div>`).join('')}</div></div>
+    <div class="block"><h3>Tips from ${esc(d.by)}</h3><ul class="tips">${x.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>
+    <div class="chips">${d.tags.map(t=>`<a class="chip" href="feed.html?q=${encodeURIComponent(t)}">${esc(t)}</a>`).join('')}</div>
+    <div class="block"><h3>Comments (<span id="cc">${x.comments.length}</span>)</h3><div id="cms">${x.comments.map(commentHTML).join('')}</div>
+      <div class="cform"><input id="cin" placeholder="Add a comment" maxlength="300" aria-label="Add a comment"><button id="cpost" disabled>Post</button></div></div>
+   </div>`;
+  $('#mbar').innerHTML=`<button class="copy main" id="cpy2">${cpi}<span>Copy prompt</span></button><button class="copy ${d.liked?'on':''}" id="lk2" aria-label="Like">${heart}</button><button class="copy ${savedIn(d.id).length?'on':''}" id="sv2" data-save="${d.id}" aria-label="Save to collection">${bmSvg}</button>`;
+  $('#detail .art').classList.add('loaded');
+  const missing=()=>tf.filter(f=>!S.V[f.key]).length;
+  const cp=async b=>{const ok=await copyText(filled(d));if(!ok)return toast('Copy failed. Select the text manually.');d.copies++;b.classList.add('done');b.querySelector('span').textContent='Copied';toast(missing()?'Copied, '+missing()+' placeholder(s) still empty':'Prompt copied');setTimeout(()=>{b.classList.remove('done');b.querySelector('span').textContent='Copy prompt'},1800)};
+  const lk=()=>{d.liked=!d.liked;d.likes+=d.liked?1:-1;['#lk','#lk2'].forEach(s=>$(s).classList.toggle('on',d.liked));$('#lc').textContent=fmt(d.likes)};
+  $('#cpy').onclick=e=>cp(e.currentTarget);$('#cpy2').onclick=e=>cp(e.currentTarget);$('#lk').onclick=lk;$('#lk2').onclick=lk;
+  $('#sv').onclick=()=>openPicker(d.id);$('#sv2').onclick=()=>openPicker(d.id);
+  $('#fol').onclick=e=>{const b=e.currentTarget,on=b.classList.toggle('on');b.textContent=on?'Following':'Follow'};
+  document.querySelectorAll('.vars input,.vars textarea').forEach(i=>i.oninput=()=>{S.V[i.dataset.v]=i.value.trim();$('#pbox').innerHTML=promptHTML(d);const pg=$('#prog');if(pg)pg.textContent=(tf.length-missing())+' of '+tf.length+' filled'});
+  document.querySelectorAll('.thumb').forEach(b=>b.onclick=()=>{document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('on'));b.classList.add('on');$('#heroImg .art').style.background=bg(d,+b.dataset.th)});
+  const cin=$('#cin'),cpost=$('#cpost');
+  cin.oninput=()=>cpost.disabled=!cin.value.trim();
+  const post=()=>{const v=cin.value.trim();if(!v)return;$('#cms').insertAdjacentHTML('afterbegin',commentHTML(['You',v,'just now']));cin.value='';cpost.disabled=true;$('#cc').textContent=$('#cms').children.length};
+  cpost.onclick=post;cin.onkeydown=e=>{if(e.key==='Enter')post()};
+}
+
+/* ---------- Save-to-collection picker (in memory; the backend will own collections later) ---------- */
+const COLL=[{id:'c1',name:'Church & events',ids:[5,30,19,1]},{id:'c2',name:'Client work: beauty',ids:[13,28,8,32]},{id:'c3',name:'Real estate ideas',ids:[0,18]},{id:'c4',name:'Prompts to try',ids:[7,12,29,9,20,3]},{id:'c5',name:'Weekend project',ids:[]}];
+let pkSeq=6,pkLast=null;
+const bmSvg='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>';
+const savedIn=pid=>COLL.filter(c=>c.ids.includes(pid));
+const saveBtn=id=>{const on=savedIn(id).length>0;return `<button class="save-ov ${on?'on':''}" data-save="${id}" aria-pressed="${on}" aria-label="${on?'Saved. Change collections':'Save to collection'}">${bmSvg}</button>`};
+function syncSave(pid){document.querySelectorAll(`[data-save="${pid}"]`).forEach(b=>{const on=savedIn(pid).length>0;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Saved. Change collections':'Save to collection')})}
+document.body.insertAdjacentHTML('beforeend','<div class="pk-ov" id="pkov" role="dialog" aria-modal="true" aria-label="Save to collection"><div class="pk-md" id="pkmd"></div></div>');
+const pkNameErr=n=>{const t=n.trim();if(!t)return 'Give your collection a name.';if(t.length>40)return 'Keep the name under 40 characters.';if(COLL.some(c=>c.name.toLowerCase()===t.toLowerCase()))return 'You already have a collection with that name.';return ''};
+function pkClose(){$('#pkov').classList.remove('open');document.body.style.overflow='';if(pkLast&&document.contains(pkLast))pkLast.focus()}
+function openPicker(pid){
+  const d=DATA[pid];pkLast=document.activeElement;
+  const rows=()=>COLL.map(c=>`<label class="pk-row"><input type="checkbox" data-c="${c.id}" ${c.ids.includes(pid)?'checked':''}><span>${esc(c.name)}</span><small>${c.ids.length}</small></label>`).join('');
+  $('#pkmd').innerHTML=`<h2>Save to collection</h2><p class="pk-sub">${esc(d.title)}</p><div class="pk-list" id="pkl">${rows()}</div>
+   <div class="pk-new"><input type="text" id="pkn" maxlength="40" placeholder="New collection name" aria-label="New collection name" autocomplete="off"><button class="pk-b" id="pka">Create</button></div><div class="pk-er" id="pke"></div>
+   <div class="pk-done"><a href="collections.html">View collections</a><button class="pk-b p" id="pkd">Done</button></div>`;
+  $('#pkov').classList.add('open');document.body.style.overflow='hidden';$('#pkd').focus();
+  $('#pkl').onchange=e=>{const cb=e.target.closest('[data-c]');if(!cb)return;const c=COLL.find(x=>x.id===cb.dataset.c);
+    if(cb.checked){if(!c.ids.includes(pid))c.ids.push(pid);toast('Saved to '+c.name)}else{c.ids=c.ids.filter(i=>i!==pid);toast('Removed from '+c.name)}
+    cb.closest('.pk-row').querySelector('small').textContent=c.ids.length;syncSave(pid)};
+  const add=()=>{const n=$('#pkn').value,er=pkNameErr(n);if(er){$('#pke').textContent=er;return}
+    COLL.push({id:'c'+(pkSeq++),name:n.trim(),ids:[pid]});$('#pkl').innerHTML=rows();$('#pkn').value='';$('#pke').textContent='';toast('Saved to '+n.trim());syncSave(pid)};
+  $('#pka').onclick=add;$('#pkn').onkeydown=e=>{if(e.key==='Enter')add()};$('#pkn').oninput=()=>$('#pke').textContent='';$('#pkd').onclick=pkClose;
+}
+$('#pkov').addEventListener('mousedown',e=>{if(e.target.id==='pkov')pkClose()});
+document.addEventListener('keydown',e=>{
+  if(!$('#pkov').classList.contains('open'))return;
+  if(e.key==='Escape')return pkClose();
+  if(e.key==='Tab'){const f=[...$('#pkmd').querySelectorAll('button,input,a[href]')];const a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
+});
+
+const io=new IntersectionObserver(es=>{let n=0;es.forEach(e=>{if(e.isIntersecting){const c=e.target;io.unobserve(c);setTimeout(()=>c.classList.add('in'),Math.min(n++,8)*40)}})},{rootMargin:'0px 0px -6% 0px'});
+function cardHTML(d){
+  return `<article class="card">${saveBtn(d.id)}<div class="media" data-go="${d.id}" style="aspect-ratio:${d.w}/${d.h}" role="link" tabindex="0" aria-label="Open ${esc(d.title)}">${artHTML(d)}</div>
+  <div class="body"><h3 class="title" data-go="${d.id}">${esc(d.title)}</h3><div class="meta">${esc(d.by)} · ${d.tool}</div>
+  <p class="preview">${esc(d.prompt)}</p>
+  <div class="foot"><span><b>${fmt(d.copies)}</b> copies</span><button class="cbtn" data-copy="${d.id}" aria-label="Copy prompt">${cpi.replace(/16/g,'14')}<span>Copy</span></button></div></div></article>`;
+}
+function loadMore(n=10){
+  if(S.busy)return;S.busy=true;
+  const g=$('#grid'),sk=[];
+  for(let i=0;i<3;i++){const s=document.createElement('div');s.className='sk';s.style.height=(280+i*60)+'px';g.appendChild(s);sk.push(s)}
+  setTimeout(()=>{
+    sk.forEach(s=>s.remove());let html='';
+    for(let i=0;i<n;i++){const d=S.queue[S.cursor%S.queue.length];S.cursor++;S.seq++;html+=cardHTML(d)+(S.seq%12===6?'<div class="ad">Advertisement</div>':'')}
+    const t=document.createElement('div');t.innerHTML=html;
+    [...t.children].forEach(el=>{g.appendChild(el);if(el.classList.contains('card')){io.observe(el);el.querySelector('.art').classList.add('loaded')}});
+    S.busy=false;
+  },450);
+}
+new IntersectionObserver(es=>{if(es[0].isIntersecting)loadMore()},{rootMargin:'900px 0px'}).observe($('#sentinel'));
+
+function openPrompt(id,push=true){
+  if(!DATA[id])return;
+  S.cur=id;S.queue=rank(id);S.cursor=0;S.seq=0;
+  if(push)safeHistory('pushState',{id},'','?id='+id);
+  renderDetail();$('#grid').innerHTML='';$('#relNote').textContent='Related to '+DATA[id].cat;
+  window.scrollTo({top:0,behavior:'smooth'});
+  S.busy=false;loadMore(12);
+}
+$('#grid').onclick=async e=>{
+  const cp=e.target.closest('[data-copy]'),go=e.target.closest('[data-go]'),sv=e.target.closest('[data-save]');
+  if(sv)openPicker(+sv.dataset.save);
+  else if(cp){const d=DATA[+cp.dataset.copy];if(await copyText(d.prompt)){d.copies++;cp.classList.add('done');cp.querySelector('span').textContent='Copied';toast('Prompt copied');setTimeout(()=>{cp.classList.remove('done');cp.querySelector('span').textContent='Copy'},1800)}else toast('Copy failed. Select the text manually.')}
+  else if(go)openPrompt(+go.dataset.go);
+};
+$('#grid').onkeydown=e=>{if(e.key==='Enter'&&e.target.dataset.go)openPrompt(+e.target.dataset.go)};
+window.onpopstate=e=>openPrompt(e.state&&e.state.id!=null?e.state.id:(idFromUrl()??0),false);
+
+function idFromUrl(){const raw=new URLSearchParams(location.search).get('id')??location.hash.slice(1);const v=parseInt(raw,10);return Number.isInteger(v)&&DATA[v]?v:null}
+try{
+  const start=idFromUrl();
+  if(start===null&&(location.search||location.hash)){const e=$('#err');e.style.display='block';e.textContent="We couldn't find that prompt, so here's a popular one instead."}
+  const id=start??1;
+  safeHistory('replaceState',{id},'','?id='+id);
+  openPrompt(id,false);
+}catch(err){const e=$('#err');e.style.display='block';e.textContent='Something went wrong loading this prompt. Please refresh.';console.error(err)}
+</script>
+</body>
+</html>
